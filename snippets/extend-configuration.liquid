@@ -1,0 +1,18 @@
+<script src="https://sdk.helloextend.com/extend-sdk-client/v1/extend-sdk-client.min.js" defer="defer"></script>  
+<script src="https://sdk.helloextend.com/extend-sdk-client-shopify-addon/v1/extend-sdk-client-shopify-addon.min.js" defer="defer"></script>  
+<script defer="defer">
+ window.addEventListener('DOMContentLoaded', function(){
+   Extend.config({ storeId: 'e329b72c-125a-4842-8db4-a3d5f483927b', environment: 'production' })
+   Extend.analytics = true;
+ })
+</script>
+
+<!-- Extend - Render polyfills to enable IE11 support -->
+{% render 'extend-polyfills' %}
+
+<!-- Extend - Render aftermarket integration snippet -->
+{% render 'extend-aftermarket-integration' %}
+
+<!-- Extend - Render analytics -->
+{% render 'extend-analytics' %}
+<!-- Extend - End Extend code -->

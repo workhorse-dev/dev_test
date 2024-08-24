@@ -1,0 +1,90 @@
+{% if product.metafields.custom.left_image1_with_right_content != blank and product.metafields.custom.image_with_text_right_1_content != blank or product.metafields.custom.image_with_text_left_2_content != blank and product.metafields.custom.image_with_text_left2_image != blank or product.metafields.custom.image_with_text_left3_image != blank and product.metafields.custom.image_with_text_right_3_content != blank%}
+<section class="product-information-section">
+  <div class="container">
+    <div class="inside-container feature-tab-container">
+      {% if product.metafields.custom.left_image1_with_right_content != blank and product.metafields.custom.image_with_text_right_1_content != blank %}
+      <div class="row align-items-center">
+        <div class="col-12 col-sm-12 col-md-7">
+          <div class="product-imgs">
+            <img src="{{ product.metafields.custom.left_image1_with_right_content | file_url }}" alt="left-image" class="img-fluid"/>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-5 sm-text-center">
+          {{ product.metafields.custom.image_with_text_right_1_content }}
+        </div>
+      </div>
+      {% endif %}
+      {% if product.metafields.custom.image_with_text_left_2_content != blank and product.metafields.custom.image_with_text_left2_image != blank %}
+      <div class="row align-items-center">
+        <div class="col-12 col-sm-12 col-md-5 set-order-3 sm-text-center">
+          {{ product.metafields.custom.image_with_text_left_2_content }}
+        </div>
+        <div class="col-12 col-sm-12 col-md-7 space-cls set-order-2">
+          <div class="product-imgs">
+            <img src="{{ product.metafields.custom.image_with_text_left2_image | file_url }}" alt="right-image" class="img-fluid"/>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% if product.metafields.custom.image_with_text_left3_image != blank and product.metafields.custom.image_with_text_right_3_content != blank %}
+       <div class="row align-items-center">
+        <div class="col-12 col-sm-12 col-md-7 space-cls">
+          <div class="product-imgs">
+            <img src="{{ product.metafields.custom.image_with_text_left3_image | file_url }}" alt="left1-image" class="img-fluid"/>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-5 sm-text-center">
+          {{ product.metafields.custom.image_with_text_right_3_content }}
+        </div>
+      </div>
+      {% endif %}
+      {% if product.metafields.custom.image_with_text_left4_image != blank and product.metafields.custom.image_with_text_right_4_content != blank %}
+       <div class="row align-items-center">
+        <div class="col-12 col-sm-12 col-md-5 set-order-3 sm-text-center">
+          {{ product.metafields.custom.image_with_text_right_4_content }}
+        </div>
+        <div class="col-12 col-sm-12 col-md-7 space-cls set-order-2">
+          <div class="product-imgs">
+            <img src="{{ product.metafields.custom.image_with_text_left4_image | file_url }}" alt="left1-image" class="img-fluid"/>
+          </div>
+        </div> 
+      </div>
+      {% endif %}
+      {% if product.metafields.custom.image_with_text_right_5_image != blank and product.metafields.custom.image_with_text_left_5_content != blank %}
+       <div class="row align-items-center">
+        <div class="col-12 col-sm-12 col-md-7 space-cls">
+          <div class="product-imgs">
+            <img src="{{ product.metafields.custom.image_with_text_right_5_image | file_url }}" alt="left1-image" class="img-fluid"/>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-5 sm-text-center">
+          {{ product.metafields.custom.image_with_text_left_5_content }}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section> 
+{% endif %}
+{% if product.metafields.custom.image_with_text_1_center != blank and product.metafields.custom.image_1_center_with_text_ != blank %}
+<section class="workflow-section">
+  <div class="container">
+    <div class="workflow-top-content text-center">
+      {{ product.metafields.custom.image_with_text_1_center }}
+    </div>
+    <div class="d-flex justify-content-center"> 
+      <img src="{{ product.metafields.custom.image_1_center_with_text_ | file_url }}" alt="right-image" class="img-fluid"/>
+    </div>
+    <span>{{ product.metafields.custom.image_with_text_center_single_content }}</span>
+  </div>
+</section>
+{% endif %}
+{% if product.metafields.custom.builtin_battery_and_speed_with_image != blank %}
+<section class="builtin-battery-section">
+  <div class="container">
+    <div class="inside-container">
+      {{ product.metafields.custom.builtin_battery_and_speed_with_image }}
+    </div>
+  </div>
+</section>
+{% endif %}

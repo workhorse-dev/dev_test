@@ -1,0 +1,365 @@
+{% comment %}
+  image: section.settings.image,
+  mobile_image: section.settings.mobile_image,
+  show_overlay: section.settings.show_overlay,
+  title: section.settings.title,
+  title_color: section.settings.title_color,
+  subheading: section.settings.subheading,
+  subheading_color: section.settings.subheading_color,
+  section_id: section.id,
+  paragraph_1: section.settings.paragraph_1,
+  title_paragraph_2: section.settings.title_paragraph_2,
+  paragraph_2: section.settings.paragraph_2,
+  form_title: section.settings.form_title,
+  form_script: section.settings.form_script,
+  blocks: section.blocks
+{% endcomment %}
+
+<style>
+  {% if title_color %}
+    .text-block__{{section_id}} h2 {
+      color: {{ title_color }} !important;
+    }
+  {% endif %}
+
+  {% if subheading_color %}
+    .text-block__{{section_id}} h3 {
+      color: {{ subheading_color }} !important;
+    }
+  {% endif %}
+  .text-block__dynamic-image-with-text-and-form  .text-panel .subheading-type2{
+     color: {{section.settings.content_color}};
+  }
+  {% if image %}
+    @media screen and (min-width: 860px) {
+      .section__inner.section__{{section_id}} {
+        background-image: {% if show_overlay %}linear-gradient(29deg, rgba(35,31,32,.4) 31%, rgba(255,255,255,0.4) 77%),{% endif %}url("{{ image | img_url: '1920x' }}");
+      }
+    }
+  {% endif %}
+
+  {% assign imageForMobile = "" %}
+  {% if mobile_image %}
+    {% assign imageForMobile = mobile_image %}
+  {% else %}
+    {% if image %}
+      {% assign imageForMobile = image %}
+    {% endif %}
+  {% endif %}
+  @media screen and (max-width: 859px){
+    .text-block__{{section_id}} {
+      background-image:  {% if show_overlay %}linear-gradient(29deg, rgba(35,31,32,.4) 31%, rgba(255,255,255,1) 100%),{% endif %}url("{{ imageForMobile | img_url: 'x1000' }}");
+    }
+  }
+</style>
+
+<section class="image_block" data-image-block>
+  <div class="section__inner section__{{section_id}}">
+    <div class="text-content container">
+      <div class="text-block__{{section_id}} header-half mobile-background inside-container">
+        <div class="text-panel">
+          <div class="text-container">
+            {% if title != blank %}
+              <h2 class="main-heading image-block__heading">{{ title | escape }}</h2>
+            {% endif %}
+
+            {% if subheading != blank %}
+              <h3 class="heading-type2 image-block__subheading">{{ subheading | escape }}</h3>
+            {% endif %}
+
+            <div class="paragraph-1 subheading-type2">
+              {% if paragraph_1 != blank %}
+                {{ paragraph_1 | newline_to_br }}
+              {% endif %}
+            </div>
+
+            <div class="paragraph-2-title">
+              {% if title_paragraph_2 != blank %}
+                {{ title_paragraph_2 }}
+              {% endif %}
+            </div>
+
+            <div class="paragraph-2">
+              {% if paragraph_2 != blank %}
+                {% assign paragraph_2_split = paragraph_2 | newline_to_br | strip_newlines | split: '<br />'  %}
+                {% for line-item in paragraph_2_split %}
+                  {% if forloop.first or forloop.index == 5 or forloop.index == 9 %}
+                    <ul class="column">
+                  {% endif %}
+                  <li>{{ line-item }}</li>
+                  {% if forloop.index == 4 or forloop.index == 8 %}
+                    </ul>
+                  {% endif %}
+                {% endfor %}
+                {% if forloop.length != 4 and forloop.length != 4 %}
+                  </ul>
+                {% endif %}
+              {% endif %}
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="form-area header-half" id="form-contact">
+        <div class="form-panel">
+          <div class="form-container">
+            <h2 class="form-title main-heading text-white">{{ form_title | newline_to_br }}</h2>
+            <div class="form-fields">
+              {% if form_script != blank %}
+                {{ form_script }}
+              {% else %}
+
+                {% if blocks.size > 0 %}
+
+                  {% form 'contact', class: 'contact-form' %}
+
+                    <div class="form__messages">
+                      {% if form.posted_successfully? %}
+                        <p class="success">
+                          {{ 'contact.form.post_success' | t }}
+                        </p>
+                      {% endif %}
+
+                      {% if form.errors %}
+                        <p class="errors">
+                          {{ form.errors | default_errors }}
+                        </p>
+                      {% endif %}
+                    </div>
+
+                  {% assign textFields = 0 %}
+                  {% assign emails = 0 %}
+                  {% assign urls = 0 %}
+                  {% assign phoneNumbers = 0 %}
+                  {% assign dropdownOptionSelects = 0 %}
+                  {% assign textAreas = 0 %}
+
+                  <input style="display: none;" id="contact-page-name" class="form-element input" type="text" name="contact[Page]" value="{{ page.title}}" hidden/>
+
+                    {% for block in blocks %}
+
+                      {% if block.settings.title != blank %}
+                        {% assign block_title = block.settings.title %}
+                        {% assign is_required = block.settings.is_required %}
+
+                        {% assign placeholder_star = "" %}
+                        {% if is_required %}
+                          {% assign placeholder_star = " *" %}
+                        {% endif %}
+                        {% assign placeholder_text = block_title | append: placeholder_star %}
+
+                        {% assign crtId = "" %}
+                        {% assign crtName = "" %}
+                        {% assign crtValue = "" %}
+                        {% assign customClass = "" %}
+
+                        {% if block.settings.width_percent == "100" %}
+                          {% assign customClass = "full-width" %}
+                        {% endif %}
+
+                        {% case block.type %}
+
+                          {% when 'text-field' %}
+                            {% assign labelToId = block_title | downcase | replace: ' ', '-' %}
+                            {% comment %}
+                              {% if textFields != 0 %}
+                                {% assign labelToId = labelToId | append: textFields %}
+                              {% endif %}
+                            {% endcomment %}
+                            {% assign crtId = "contact-" | append: labelToId %}
+                            {% assign crtName = "contact[" | append: labelToId | append: "]" %}
+                            {% assign crtValue = form[labelToId] %}
+
+                            {%
+                              include 'form-elements',
+                              id: crtId,
+                              name: crtName,
+                              type: 'text'
+                              value: crtValue,
+                              placeholder: placeholder_text,
+                              label: block_title,
+                              label_hidden: true,
+                              required: is_required,
+                              custom_class_parent: customClass
+                            %}
+                            {% assign textFields =  textFields | plus: 1 %}
+
+                          {% when 'number-field' %}
+                            {% assign labelToId = block_title | downcase | replace: ' ', '-' %}
+                            {% comment %}
+                              {% if textFields != 0 %}
+                                {% assign labelToId = labelToId | append: textFields %}
+                              {% endif %}
+                            {% endcomment %}
+                            {% assign crtId = "contact-" | append: labelToId %}
+                            {% assign crtName = "contact[" | append: labelToId | append: "]" %}
+                            {% assign crtValue = form[labelToId] %}
+
+                            {%
+                              include 'form-elements',
+                              id: crtId,
+                              name: crtName,
+                              type: 'number'
+                              value: crtValue,
+                              placeholder: placeholder_text,
+                              label: block_title,
+                              label_hidden: true,
+                              required: is_required,
+                              custom_class_parent: customClass
+                            %}
+                            {% assign textFields =  textFields | plus: 1 %}
+
+                          {% when 'email' %}
+                            {% assign labelToId = block_title | downcase | replace: ' ', '-' %}
+                            {% assign crtId = "contact-" | append: labelToId %}
+                            {% assign crtName = "contact[" | append: labelToId | append: "]" %}
+                            {% assign crtValue = form[labelToId] %}
+
+                            {%
+                              include 'form-elements',
+                              id: 'contact-email',
+                              name: 'contact[email]',
+                              type: 'email'
+                              value: form.email,
+                              placeholder: placeholder_text,
+                              label: block_title,
+                              required: true,
+                              error: email_error,
+                              label_hidden: true,
+                              required: is_required,
+                              custom_class_parent: customClass
+                            %}
+                            {% assign emails = emails | plus: 1 %}
+
+                          {% when 'url' %}
+                            {% assign labelToId = block_title | downcase | replace: ' ', '-' %}
+                            {% assign crtId = "contact-" | append: labelToId %}
+                            {% assign crtName = "contact[" | append: labelToId | append: "]" %}
+                            {% assign crtValue = form[labelToId] %}
+
+                            {%
+                              include 'form-elements',
+                              id: 'contact-email',
+                              name: 'contact[email]',
+                              type: 'text'
+                              value: form.email,
+                              placeholder: placeholder_text,
+                              label: block_title,
+                              required: true,
+                              error: email_error,
+                              label_hidden: true,
+                              required: is_required,
+                              custom_class_parent: customClass
+                            %}
+
+                            {% assign urls = urls | plus: 1 %}
+                          {% when 'phone-number' %}
+                            {% assign labelToId = block_title | downcase | replace: ' ', '-' %}
+                            {% assign crtId = "contact-" | append: labelToId %}
+                            {% assign crtName = "contact[" | append: labelToId | append: "]" %}
+                            {% assign crtValue = form[labelToId] %}
+
+                            {%
+                              include 'form-elements',
+                              id: crtId,
+                              name: crtName,
+                              type: 'text'
+                              value: crtValue,
+                              placeholder: placeholder_text,
+                              label: block_title,
+                              required: true,
+                              error: email_error,
+                              label_hidden: true,
+                              required: is_required,
+                              custom_class_parent: customClass
+                            %}
+
+                            {% assign  phoneNumbers = phoneNumbers | plus: 1 %}
+                          {% when 'dropdown-option-select' %}
+                            {% assign labelToId = block_title | downcase | replace: ' ', '-' %}
+                            {% assign crtId = "contact-" | append: labelToId %}
+                            {% assign crtName = "contact[" | append: labelToId | append: "]" %}
+                            {% assign crtValue = "" %}
+
+                            {% assign valuesArr = block.settings.select_values | newline_to_br | strip_newlines | split: '<br />'  %}
+
+                            {% for val in valuesArr %}
+                              {% assign valToAdd = val %}
+                              {% assign textToDisplay = val %}
+                              {% if placeholder_text contains "*" and placeholder_text contains valToAdd %}
+                                {% assign valToAdd = "" %}
+                                {% assign textToDisplay = val | append: " *" %}
+                              {% else %}
+                                {% assign valToAdd = '="' | append: valToAdd | append:'"' %}
+                              {% endif %}
+
+                              {% assign crtValue = crtValue | append: "<option value" | append: valToAdd | append: ">" | append: textToDisplay | append: "</option>" %}
+                            {% endfor %}
+
+                            {%
+                              include 'form-elements',
+                              id: crtId,
+                              name: crtName,
+                              type: 'select'
+                              value: crtValue,
+                              placeholder: placeholder_text,
+                              label: block_title,
+                              required: true,
+                              error: email_error,
+                              label_hidden: true,
+                              required: is_required,
+                              custom_class_parent: customClass
+                            %}
+
+                            {% assign dropdownOptionSelects = dropdownOptionSelects | plus: 1 %}
+                          {% when 'textarea' %}
+                            {% assign labelToId = block_title | downcase | replace: ' ', '-' %}
+                            {% assign crtId = "contact-" | append: labelToId %}
+                            {% assign crtName = "contact[" | append: labelToId | append: "]" %}
+                            {% assign crtValue = form[labelToId] %}
+
+                            {%
+                              include 'form-elements',
+                              id: crtId,
+                              name: crtName,
+                              type: 'textarea'
+                              value: crtValue,
+                              placeholder: placeholder_text,
+                              label: block_title,
+                              label_hidden: true,
+                              required: is_required,
+                              custom_class_parent: customClass
+                            %}
+                            {% assign textAreas = textAreas | plus: 1 %}
+                          {% else %}
+                            Default
+                        {% endcase %}
+
+
+                      {% endif %}
+                    {% endfor %}
+
+
+                    {% assign contact_form_submit_value = "Submit" %}{% comment %}'contact.form.send' | t{% endcomment %}
+                    {%
+                      include 'form-elements',
+                      secondary: true,
+                      type: 'submit',
+                      value: contact_form_submit_value
+                    %}
+                  {% endform %}
+
+                {% endif %}
+              {% endif %}
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>

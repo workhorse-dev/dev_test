@@ -1,0 +1,602 @@
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+<section class="custom-breadcrumb-section">
+  <div class="container">
+    <div class="inside-container">
+      <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          {% if collection.url %}
+            <li class="breadcrumb-item">{{ collection.title | link_to: collection.url }}</li>
+          {% else %} 
+            {% comment %}
+             {% assign main_collections = product.collections.first  %}
+              {% if main_collections.handle %}
+                <li class="breadcrumb-item">{{ main_collections.title | link_to: main_collections.url }}</li>
+              {% endif %}
+            {% endcomment %}
+          {% endif %}
+          {% comment %}
+          {%- if product.type -%}
+          <li class="breadcrumb-item">
+          {{ product.type | link_to: product.type.url }}
+          </li>
+          {%- endif -%}
+          {% endcomment %}
+          <li class="breadcrumb-item active" aria-current="page"><a href="{{product.url}}">{{- product.title | escape -}}</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</section>
+<section class="product-details-section section-{{ section.id }}-padding">
+  {%- assign product_form_id = 'product-form-' | append: section.id -%}
+  <div class="container" id="ProductSection-product-template">
+    <div class="inside-container details_container">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-7">
+          <div class="product-top-text-mobile">
+            <h5 class="heading-type3 d-none">{{ product.vendor }}</h5>
+            <h1 class="heading-type2">{{ product.title }}</h1>
+            <p class="mb-2 d-none">SKU: {{ current_variant.sku }}</p>
+            <div class="d-flex- align-items-center rating-sec">
+               {% comment %}
+              {% if product.sku %}
+                 <div id="amzn-roa-rating" data-site-id="gdie9a998l" data-roa-instance-id="o7fu55riqvjs1" data-sku="{{product.sku}}"></div>
+              {% else %}
+                 <div id="amzn-roa-rating" data-site-id="gdie9a998l" data-roa-instance-id="o7fu55riqvjs1" data-sku="{{product.selected_or_first_available_variant.sku}}"></div>
+              {% endif %}
+             
+                <div class="yotpo bottomLine mb-4" data-product-id="{{ product.id }}">
+                        {%- assign yotpo_offload_content = shop.metafields.yotpo.yotpo_offload_content %}
+                        {%- assign time_now = 'now' | date: '%s' %}
+                        {%- assign yotpo_live_time = shop.metafields.yotpo.yotpo_live | date: '%s' %}
+                        {%- assign diff_seconds_from_live = time_now | minus: yotpo_live_time %}
+                        {%- assign yotpo_bottomline_last_updated = product.metafields.yotpo.bottomline_update_time | date: '%s' %}
+                        {%- assign diff_seconds_from_last_bottomline_update = time_now | minus: yotpo_bottomline_last_updated %}
+                        {%- if yotpo_live_time and diff_seconds_from_live < 86400 or yotpo_bottomline_last_updated and diff_seconds_from_last_bottomline_update < 86400 -%}
+                          {%- assign yotpo_bottomline_obsolete = false %}
+                        {%- else %}
+                          {%- assign yotpo_bottomline_obsolete = true %}
+                        {%- endif %}
+                        {%- if yotpo_offload_content == 'yes' and yotpo_bottomline_obsolete != true -%}
+                          {{ product.metafields.yotpo.bottomline }}
+                        {%- endif %}
+                      </div>
+               
+                <div data-bv-show="rating_summary" data-bv-product-id="{{product.id}}"></div>
+               {% endcomment %}
+            </div>
+          </div>
+          <div id="carouselExampleIndicators" class="carousel slide carousel-fade detail-carousel" data-bs-ride="carousel" data-bs-interval="false">
+            <div class="carousel-indicators flex-row-reverse">
+              {% for media  in product.media %}
+                {% if media.media_type == 'image' %}
+                  {% assign image_color = media.alt %}
+                  {% unless image_color contains 'section-' %}
+                    <button data-color="{{ image_color | handleize }}" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.index0 }}" {% if forloop.first %}class="active" aria-current="true" {% endif %}  aria-label="Slide {{ forloop.index }}">
+                      <div class="carousel-left-img">
+                        <img src="{{ media | img_url: '100x' }}" alt="{{ media.alt }}"  loading="lazy"/>
+                      </div>
+                    </button>
+                  {% endunless %}
+                {% elsif media.media_type == 'video' or media.media_type =='external_video' %}
+                  {% assign video_color = media.alt %}
+                  {% unless video_color contains 'section-' %}
+                    <button data-color="{{ video_color | handleize }}" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.index0 }}" {% if forloop.first %}class="active" aria-current="true"{% endif %}  aria-label="Slide {{ forloop.index }}">
+                      <div class="carousel-left-img d-none d-md-block">
+                        <img src="{{ media.preview_image | img_url: '100x' }}" alt="{{ media.alt }}"  loading="lazy"/>
+                       {% comment %} {{ media | video_tag: class: 'thumbnail-video', image_size: '100x100', controls: false, autoplay: false, loop: false }}{% endcomment %}
+                      <div class="product-single__thumbnail-badge d-none d-md-block">
+                        {% include 'icon-video-badge-full-color' %}
+                      </div>
+                      </div>
+                    </button>
+                  {% endunless %}
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div class="carousel-inner">
+              {% for media in product.media %}
+                {% if media.media_type == 'image' %}
+                  {% assign image_color = media.alt %}
+                  {% unless image_color contains 'section-' %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}" data-color="{{ image_color | handleize }}">
+                      <div class="carousel-item-img">
+                        <img src="{{ media | img_url: 'original' }}" class="img-fluid" alt="{{ media.alt }}" loading="lazy"/>
+                      </div>
+                    </div>
+                  {% endunless %}
+                  {% elsif media.media_type == 'video' %}
+                    {% assign video_color = media.alt %}
+                    {% unless video_color contains 'section-' %}
+                      <div class="carousel-item {% if forloop.first %}active{% endif %}" data-color="{{ video_color | handleize }}">
+                        <div class="carousel-item-img">
+                          {{ media | video_tag: class:w-100, autoplay: true, loop: true, controls: true }}
+                        </div>
+                      </div>
+                    {% endunless %}
+                  {% elsif media.media_type == 'external_video' %}
+                    {% assign video_color = media.alt %}
+                    {% unless video_color contains 'section-' %}
+                      <div class="carousel-item {% if forloop.first %}active{% endif %}" data-color="{{ video_color | handleize }}">
+                        <div class="carousel-item-img">
+                          {% comment %}
+                          {{ media | external_video_tag: controls: true, autoplay: true, loop: true, class: "w-100", loading: "lazy" }}
+                          {% endcomment %}
+                          <iframe class="main-video w-100" src="https://www.youtube.com/embed/{{ media.external_id }}?autoplay=1&loop=1&mute=1&controls=1&playsinline=1" frameborder="0" allow="autoplay; encrypted-media" loading="lazy"></iframe>
+                        </div>
+                      </div>
+                    {% endunless %}
+                  {% else %}
+                    {% assign video_color = media.alt %}
+                    {% unless video_color contains 'section-' %}
+                      {{ media | media_tag: class: 'media-item w-100' }}
+                    {% endunless %}
+                  {% endif %}
+              {% endfor %}
+            </div>
+           {% if product.media.size > 4 %} 
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <img src="{{ 'top-arrow.png' | asset_url }}" alt="top arrow" />
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <img src="{{ 'bottom-arrow.png' | asset_url }}" alt="bottom arrow" />
+              </button>
+           {% endif %}  
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-5 set-sm-margin">
+          <div class="details-carousel-content">
+            <div class="product-top-text-desktop">
+              {%- for block in section.blocks -%}
+                {%- case block.type -%}
+                  {%- when '@app' -%}
+                  {% render block %}
+                  {%- when 'text' -%}
+                    {% if block.settings.text != blank %}
+                      <h5 class="d-none heading-type3 product__text{% if block.settings.text_style == 'uppercase' %} text-uppercase{% elsif block.settings.text_style == 'lowercase' %} text-lowercase{% endif %}" {{ block.shopify_attributes }}>
+                        {{- block.settings.text -}}
+                      </h5>
+                    {% else %}  
+                    <h5 class="heading-type3 d-none">{{ product.vendor }}</h5>
+                    {% endif %}  
+              
+                  {%- when 'title' -%}
+                    <h1 class="heading-type2" {{ block.shopify_attributes }}>{{ product.title |escape }}</h1>
+                  {%- when 'sku' -%}
+                    <p class="mb-2 d-none">SKU : {{ current_variant.sku }}</p>
+              
+                  {%- when 'rating' -%}
+                    <div class="reviews">
+                      {% if product.sku %}
+                         <div id="amzn-roa-rating" data-site-id="gdie9a998l" data-roa-instance-id="o7fu55riqvjs1" data-sku="{{product.sku}}"></div>
+                      {% else %}
+                         <div id="amzn-roa-rating" data-site-id="gdie9a998l" data-roa-instance-id="o7fu55riqvjs1" data-sku="{{product.selected_or_first_available_variant.sku}}"></div>
+                      {% endif %}
+                      {% comment %}
+                      <div class="yotpo bottomLine mb-4" data-product-id="{{ product.id }}">
+                        {%- assign yotpo_offload_content = shop.metafields.yotpo.yotpo_offload_content %}
+                        {%- assign time_now = 'now' | date: '%s' %}
+                        {%- assign yotpo_live_time = shop.metafields.yotpo.yotpo_live | date: '%s' %}
+                        {%- assign diff_seconds_from_live = time_now | minus: yotpo_live_time %}
+                        {%- assign yotpo_bottomline_last_updated = product.metafields.yotpo.bottomline_update_time | date: '%s' %}
+                        {%- assign diff_seconds_from_last_bottomline_update = time_now | minus: yotpo_bottomline_last_updated %}
+                        {%- if yotpo_live_time and diff_seconds_from_live < 86400 or yotpo_bottomline_last_updated and diff_seconds_from_last_bottomline_update < 86400 -%}
+                          {%- assign yotpo_bottomline_obsolete = false %}
+                        {%- else %}
+                          {%- assign yotpo_bottomline_obsolete = true %}
+                        {%- endif %}
+                        {%- if yotpo_offload_content == 'yes' and yotpo_bottomline_obsolete != true -%}
+                          {{ product.metafields.yotpo.bottomline }}
+                        {%- endif %}
+                      </div>
+                      {% endcomment %}
+                      <div data-bv-show="rating_summary" data-bv-product-id="{{product.id}}"></div>
+                    </div>
+                  {%- endcase -%} 
+                {%- endfor -%}  
+              </div>
+              
+                 {%- for block in section.blocks -%}
+                  {%- case block.type -%}
+                    {%- when '@app' -%}
+                    {% render block %}
+                    {% when 'description' %}
+                      <h2 class="content-sec" {{ block.shopify_attributes }}>
+                      {%- if product.description != blank -%}
+                        {% assign productDescription = product.description %}
+                        {% if productDescription contains '<!--SHORTCODES-->' %}
+                          {% assign descriptionSegments = product.description | split: '<!--SHORTCODES-->' %}
+                          {% if descriptionSegments[0] != "" %}
+                            <div class="product-single__description">
+                              {{ descriptionSegments[0] }}
+                            </div>
+                          {% endif %}
+                        {% else %}
+                          {% if productDescription != "" %}
+                            <div class="product-single__description">
+                              {{ productDescription }}
+                            </div>
+                          {% endif %}
+                        {% endif %}
+                      {% endif %}
+                      </h2>
+                     {%- when 'price' -%}
+                      <div class="price-color-sec">
+                        <h3 class="heading-type2">
+                        {% if product.compare_at_price > product.price %}
+                          <span class="strikethrough me-1"> {{ product.compare_at_price | money }}</span>
+                        {% endif %}
+                        <span class="font-weight-bold me-1">{{product.price | money}} </span></h3>
+                         {% if product.available %}
+                            <p class="in-stock mb-4">In Stock</p>
+                            {% else %}
+                            <p class="in-stock mb-4">Out of Stock</p>
+                          {% endif %}
+                      </div>
+                    {% when 'quantity_selector' %}
+                      <div class="quantity">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="30">
+                      </div>
+                    {%- when 'custom_liquid' -%}
+                    {{ block.settings.custom_liquid }}
+                    {%- endcase -%} 
+                  {%- endfor -%}  
+              
+                  <div class="price-color-sec">
+                {% form 'product', product, class:form_classes, novalidate: 'novalidate', data-product-form: '' %}
+                  {% unless product.has_only_default_variant %} 
+                    {% for option in product.options_with_values %}
+                      {% for option in product.options_with_values %}
+                        <div class="selector-wrapper js product-form__item{% if option.name contains 'color' or option.name contains 'Color' or option.name contains 'Colors' or option.name contains 'colors' %} is-color{% endif %}">
+                              <label {% if option.name == 'default' %}class="label--hidden" {% endif %}for="SingleOptionSelector-{{ forloop.index0 }}">
+                                {{ option.name }}:
+                              </label>
+                              {% if option.name contains 'color' or option.name contains 'Color' or option.name contains 'Colors' or option.name contains 'colors' %}
+                                
+                                {% include 'product-colors' %}
+                                
+                                  <span class="color-name">
+                                  {% for value in option.values %}
+                                    {% if option.selected_value == value %}{{ value }}{% endif %}
+                                  {% endfor %}
+                                  </span>
+                                  {% if product.selected_or_first_available_variant.sku != blank %}
+                                    <span class="variant-sku">- SKU: {{ product.selected_or_first_available_variant.sku }}</span>
+                                  {% endif %}
+                                  <ul class="swatches color-sec">
+                                    {% for value in option.values %}
+                                      {% assign variant_color = value | downcase %}
+                                      {% assign has_color = false %}
+                                      {% for color in colors %}
+                                    
+                                        {% assign color_array = color | split: '=' %}
+                                        {% for color_component in color_array %}
+                                          {% if forloop.first %}
+                                            {% assign color_name = color_component | remove_first: "$" | strip %}
+                                          {% else %}
+                                            {% assign color_hex = color_component | strip %}
+                                          {% endif %}
+                                          {% if color_name == variant_color %}
+                                            {% assign has_color = true %}
+                                          {% endif %}
+                                        {% endfor %}
+                                      {% endfor %}
+                                    
+                                      {% if has_color == true %}
+                                        {% for color in colors %}
+                                          {% assign color_array = color | split: '=' %}
+                                          {% for color_component in color_array %}
+                                            {% if forloop.first %}
+                                              {% assign color_name = color_component | remove_first: "$" | strip %}
+                                            {% else %}
+                                              {% assign color_hex = color_component | strip %}
+                                            {% endif %}
+                                            {% if color_name == variant_color %}
+                                              {% assign swatch_color = color_hex %}
+                                            {% endif %}
+                                          {% endfor %}
+                                        {% endfor %}
+                                        <li  attr-color="swatch-{{ value |handleize }}" class="circle {{ value }}-circle  swatch {% if option.selected_value == value %}selected{% endif %}" style="background-color: {{ swatch_color }};"></li>
+                                      {% endif %}
+                                    
+                                    {% endfor %}
+                                  </ul>
+                                
+                                  <select class="single-option-selector single-option-selector-{{ section.id }} product-form__input shopify-color-selector d-none"
+                                      id="SingleOptionSelector-{{ forloop.index0 }}"
+                                      data-index="option{{ forloop.index }}">
+                                      {% for value in option.values %}
+                                        <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+                                      {% endfor %}
+                                  </select>
+                               
+                                  {% else %}
+                                    <select class="single-option-selector single-option-selector-{{ section.id }} product-form__input d-none"
+                                        id="SingleOptionSelector-{{ forloop.index0 }}"
+                                        data-index="option{{ forloop.index }}">
+                                      {% for value in option.values %}
+                                        <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+                                      {% endfor %}
+                                    </select>
+                                  {% endif %}
+                                </div>
+                              {% endfor %}  
+                          {% endfor %}  
+                      {% endunless %} 
+                      <select name="id" id="ProductSelect-{{ section.id }}" class="product-form__variants no-js d-none">
+                      {% for variant in product.variants %}
+                      <option value="{{ variant.id }}"
+                      {%- if variant == current_variant %} selected="selected" {%- endif -%}
+                      >
+                      {{ variant.title }}  {%- if variant.available == false %} - {{ 'products.product.sold_out' | t }}{% endif %}
+                      </option>
+                      {% endfor %}
+                      </select>
+                      <!-- Extend -- Add offer element -->
+                        <div id="extend-offer"></div>
+                      <!-- Extend -- End Extend code -->
+                      {% unless current_variant.available %}
+                        {% capture disable_if_not_available %} disabled="disabled"{% endcapture %}
+                      {% endunless %}
+                      
+                      <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                      <div class="pay-buttons">
+                        <button type="submit"  id="AddTocart" data-cart-update-id="{{ product.variants.first.id }}" {{disable_if_not_available}} class="w-100 common-btn primary-btn cart-btn d-block" data-add-to-cart onclick="<script> rdt('track', 'AddToCart'); </script>">{% unless  current_variant.available %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endunless %} </button>
+                        {% if product.metafields.custom.global_site_btn_pdp and product.metafields.custom.global_site_btn_text_pdp %}
+                          <a href="{{ product.metafields.custom.global_site_btn_pdp }}" class="my-3 w-100 common-btn btn-secondary btn">{{ product.metafields.custom.global_site_btn_text_pdp }}</a>
+                        {% endif %} 
+                      </div>
+                      <span class="text-center d-block shipping">{{ section.settings.shipping_message }}</span>
+                      <p class="d-block delivery my-3 text-center d-none">FREE Delivery as soon as Sat, Apr 15</p>
+
+                      {% render 'Buy-with-prime-btn' %}  
+                      {% if section.settings.enable_payment_button %}
+                      <div class="my-3 d-none">{{ form | payment_button }}</div>
+                      <div class="payment-option justify-content-around d-flex">
+                        <ul>
+                        {% assign enabled_payment_types = 'google_pay,apple_pay,master,paypal,shopify_pay' | remove: ' ' | split: ',' %}
+                        {%- for type in  shop.enabled_payment_types -%}
+                          <li href="javascript:void(0)" class="me-2">
+                            {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+                          </li>
+                        {%- endfor -%}  
+                        </ul>
+                      </div>
+                      {% endif %}
+                      
+                {% endform %}
+                
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  var productVariants = {{ product.variants | json }};
+</script>
+{% render 'product-description' %}
+
+{% if product.metafields.custom.video_section_on_product != blank %}
+<section class="video-section">
+  <div class="video-container">
+    <video height="auto" width="100%" loop="" muted="" playsinline="" controls=""  autoplay="true" loop id="my-video">
+      Your browser does not support the video tag.
+      <source src="{{ product.metafields.custom.video_section_on_product | file_url}}" type="video/mp4">
+    </video>
+    <button id="play-button" class="d-none">
+      <img src="{{ 'play-icon.png' |asset_url}}" alt="play icon" />
+    </button>
+  </div>
+</section>
+{% endif %}
+
+{% render 'product-description-expanded' %}
+{% render 'product-faq' %}
+{% comment  %}{% render 'product-review' %}{% endcomment %}
+              
+{%- liquid
+    if product.selected_or_first_available_variant.featured_media
+      assign seo_media = product.selected_or_first_available_variant.featured_media
+    else
+      assign seo_media = product.featured_media
+    endif
+  -%}
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org/",
+      "@type": "Product",
+      "@id" : "{{shop.url}}{{ product.url }}",
+      "name": {{ product.title | json }},
+      "url": {{ request.origin | append: product.url | json }},
+      {% if seo_media -%}
+        "image": [
+          {{ seo_media | image_url: width: 1920 | prepend: "https:" | json }}
+        ],
+      {%- endif %}
+      "description": {{ product.description | strip_html | json }},
+      {% if product.selected_or_first_available_variant.sku != blank -%}
+        "sku": {{ product.selected_or_first_available_variant.sku | json }},
+      {%- endif %}
+      "brand": {
+        "@type": "Brand",
+        "name": {{ product.vendor | json }}
+      },
+      "offers": [
+        {%- for variant in product.variants -%}
+          {
+            "@type" : "Offer",
+            {%- if variant.sku != blank -%}
+              "sku": {{ variant.sku | json }},
+            {%- endif -%}
+            {%- if variant.barcode.size == 12 -%}
+              "gtin12": {{ variant.barcode }},
+            {%- endif -%}
+            {%- if variant.barcode.size == 13 -%}
+              "gtin13": {{ variant.barcode }},
+            {%- endif -%}
+            {%- if variant.barcode.size == 14 -%}
+              "gtin14": {{ variant.barcode }},
+            {%- endif -%}
+            "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+            "price" : {{ variant.price | divided_by: 100.00 | json }},
+            "priceCurrency" : {{ cart.currency.iso_code | json }},
+            "url" : {{ request.origin | append: variant.url | json }}
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+
+{% schema %}
+  {
+    "name": "t:sections.main-product.name",
+    "tag": "section",
+    "class": "section",
+    "blocks": [
+      {
+        "type": "@app"
+      },
+      {
+        "type": "text",
+        "name": "t:sections.main-product.blocks.text.name",
+        "settings": [
+            {
+              "type": "text",
+              "id": "text",
+              "default": "Text block",
+              "label": "Text Block"
+            },
+            {
+              "type": "select",
+              "id": "text_style",
+              "options": [
+                {
+                  "value": "text-uppercase",
+                  "label": "Text Uppercase"
+                },
+                {
+                  "value": "text-lowercase",
+                  "label": "Text Lowercase"
+                },
+                {
+                  "value": "text-capitalize",
+                  "label": "Text Capitalize"
+                }
+              ],
+              "default": "text-capitalize",
+              "label": "Text Style"
+            }
+          ]  
+      },
+      {
+        "type": "title",
+        "name": "t:sections.main-product.blocks.title.name",
+        "limit": 1
+      },
+      {
+        "type": "sku",
+        "name": "t:sections.main-product.blocks.sku.name",
+        "limit": 1
+      },
+      {
+        "type": "quantity_selector",
+        "name": "t:sections.main-product.blocks.quantity_selector.name",
+        "limit": 1
+      },
+      {
+        "type": "description",
+        "name": "t:sections.main-product.blocks.description.name",
+        "limit": 1
+      },
+      {
+        "type": "price",
+        "name": "t:sections.main-product.blocks.price.name",
+        "limit": 1
+      },
+      {
+        "type": "custom_liquid",
+        "name": "t:sections.main-product.blocks.custom_liquid.name",
+        "settings": [
+          {
+            "type": "liquid",
+            "id": "custom_liquid",
+            "label": "t:sections.main-product.blocks.custom_liquid.settings.custom_liquid.label",
+            "info": "t:sections.main-product.blocks.custom_liquid.settings.custom_liquid.info"
+          }
+        ]
+      },
+      {
+        "type": "rating",
+        "name": "t:sections.main-product.blocks.rating.name",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "paragraph",
+            "content": "t:sections.main-product.blocks.rating.settings.paragraph.content"
+          }
+        ]
+      }
+    ],
+   "settings": [
+     {
+        "type": "header",
+        "content": "t:sections.main-product.settings.header.content",
+        "info": "t:sections.main-product.settings.header.info"
+     },
+     {
+        "type": "text",
+        "id": "shipping_message",
+        "label": "Free Shipping Message",
+        "placeholder": "Enter Message Content",
+        "default":"Free US Shipping Over $40 + Warranty Details + Returns"
+     },
+     {
+        "type":"checkbox",
+         "id":"enable_payment_button",
+        "label":"Enable Payment Button",
+         "default":true
+      }
+    ]
+  }
+{% endschema %}  
+<script type="text/javascript">
+  
+  document.addEventListener("DOMContentLoaded", () => {
+    $('#AddTocart').click(function() {
+     var productId = {{ product.selected_or_first_available_variant.id}};
+     var qty = parseInt($('#quantity').val() || 1); 
+     
+      var selectedSwatch = $('.swatch.selected');
+      var variantId;
+
+      if (selectedSwatch.length > 0 && selectedSwatch.attr('data-variant-id')) {
+        variantId = selectedSwatch.attr('data-variant-id');
+      } else {
+        variantId = productId; // Use default variant ID
+      }
+     addItem(variantId, qty);
+     
+     function addItem() {
+       CartJS.addItem( variantId, qty, {}, {
+         "success": function(data, textStatus, jqXHR) { 
+            updateCartDrawer();
+            openCartDrawer();
+          },
+          "error": function(jqXHR, textStatus, errorThrown) {
+            console.log('error', errorThrown);
+          }
+       });
+     }
+    })
+  });
+</script>  
+<!-- Extend -- Load product integration script -->
+{% render 'extend-product-integration' %}
+<!-- Extend -- End Extend code -->

@@ -1,0 +1,227 @@
+<section class="product-list-section">
+  <div class="container">
+    <div class="inside-container">
+      <div class="row">
+        <div class="col-12 col-md-3 col-lg-3 no-mobile-filter-">
+          <div class="select-option d-flex align-items-center">
+            <div class="sort-by-box">
+             <a class="selectpicker filter-btn" href="javascript:void(0)">Filter</a>
+             <div id="myFilterNav" class="filternav" tabindex="-1"> 
+               <div class="d-flex- justify-content-between filter-close-top">
+                    <h3>Filters</h3>
+                    <a href="javascript:void(0)" class="closebtn filter-close">×</a>
+              </div>
+              <div class="filter-content">
+                {% render 'collection-filter-sidebar' %}
+              </div>
+             </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-9">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="set-borderbtm">
+                <div class="">
+                  <div class="results">
+                    <p id="resultCount" class="resultCount">{{ collection.products_count }} <span>results</span></p>
+                  </div>
+                  {% comment %}
+                  <div class="filter-option-mobile">
+                    <div class="select-option d-flex align-items-center">
+                      <div class="sort-by-box">
+                        <a class="selectpicker filter-btn" href="javascript:void(0)" onclick="openFilter()">Filter</a>
+                        <div id="myFilterNav" class="filternav" tabindex="-1">
+                          <div class="d-flex justify-content-between filter-close-top">
+                            <h3>Filters</h3>
+                            <a href="javascript:void(0)" class="closebtn" onclick="closeFilter()">×</a>
+                          </div>
+                          <div class="filter-content">
+                            {% render 'collection-filter-sidebar' %}
+                          </div>
+                          <!-- <div class="right-side-overlay"></div> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endcomment %}
+                  <div class="sort-option d-flex align-items-end justify-content-end">
+                    <div class="select-option d-flex align-items-center">
+                      <div class="sort-by-box ms-2">
+                        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                          <label for="sort-by">Sort By:</label>
+                          <select name="sort_by" id="sort-by" aria-describedby="a11y-refresh-page-message" class="selectpicker collection-sort__input">
+                            {% for option in collection.sort_options %}
+                                <option value="{{ option.value | escape }}" {% if option.value == sort_by  %}selected{% endif %}> {{ option.name | escape }}</option>
+                            {% endfor %}
+                          </select>
+                          <img src="{{ 'select-icon.png' | asset_url }}" alt="select icon"/>
+                          <input type="submit" value="Sort" class="d-none">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="results-mobile text-center">
+                  <p id="resultCount" class="resultCount">{{ collection.products_count }} <span>results</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" id="product-grid" data-products-count="{{ collection.products_count }}">
+            {% render 'collection-product-grid' %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    Shopify.queryParams = {};
+    if (location.search.length) {
+      for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+        aKeyValue = aCouples[i].split('=');
+        if (aKeyValue.length > 1) {
+          Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+        }
+      }
+    }
+    var collFilters = $('.coll-filter');
+
+    collFilters.on('change',function() {
+      handleFilterChange();
+    });
+
+    $('#sort-by').on('change', function() {
+      handleFilterChange();
+    });
+
+    // Function to handle the filter change event
+    function handleFilterChange() {
+      var newTags = [];
+      var newURL = '';
+      var sortBy = $('#sort-by').val();
+      
+      collFilters.each(function() {
+        if ($(this).is(":checked")) {
+          tags = $(this).val().replace("::", "__");
+          newTags.push(tags);
+        }
+      });
+  
+      var collectionUrl = window.location.origin + '/collections/{{ collection.handle }}';
+  
+      // Append the updated tags
+      if (newTags.length) {
+        collectionUrl += '/' + newTags.join('+');
+      }
+  
+      // Append the sort parameter
+      if (sortBy) {
+        collectionUrl += '?sort_by=' + encodeURIComponent(sortBy);
+      }
+      
+      // Update the browser URL without reloading the page
+      history.replaceState(null, '', collectionUrl);
+  
+      // Reset the pagination to the first page
+      var firstPageLink = $('.page-item:not(.prev-next):first a');
+      firstPageLink.attr('href', collectionUrl);
+
+      // Remove the constraint parameter from queryParams
+      // delete Shopify.queryParams.constraint;
+  
+      // Perform the AJAX request to update the product grid
+      updateProductGrid(collectionUrl);
+  
+    }
+    
+    // Function to update the product grid with AJAX
+    function updateProductGrid(url) {
+      $.ajax({
+        type: 'GET',
+        url: url,
+        success: function(data) {
+          var newProductsWrapper = $(data).find("#product-grid");
+          var newProductsHtml = newProductsWrapper.html();
+          
+          var newItemCount = newProductsWrapper.attr('data-products-count');
+          
+          $('.resultCount').text(newItemCount + ' results');
+          $('#product-grid').html(newProductsHtml);
+          
+  
+          // Update the pagination links with the current filters and sort order
+          updatePaginationLinks(url);
+        }
+      });
+    }
+
+    // Function to update pagination links
+    function updatePaginationLinks(collectionUrl) {
+      var paginationLinks = $('.pagination .page-item a');
+      paginationLinks.each(function() {
+      $(this).on('click', function(e) {
+        e.preventDefault(); // Prevent the default page reload behavior
+        
+        var pageUrl = $(this).attr('href');
+        
+        // Remove the constraint parameter from queryParams
+      //  delete Shopify.queryParams.constraint;
+
+        // Perform the AJAX request to update the product grid
+        updateProductGrid(pageUrl);
+      });
+    });
+    }
+});
+</script>  
+
+{% schema %}
+  {
+    "name": "Siderbar Filter",
+    "settings": [
+      {
+        "type": "range",
+        "id": "products_per_page",
+        "min": 6,
+        "max": 50,
+        "step": 1,
+        "label": "How many products per page",
+        "default": 15
+      }
+    ],
+    "blocks": [
+        {
+          "type": "tag_filter",
+          "name": "Tag By Filter",
+          "settings": [
+            {
+              "type":"text",
+              "id":"filter_heading",
+              "label":"Filter Heading"
+            },
+            {
+              "type":"text",
+              "id":"filter_tags",
+              "label":"Filter Tags"
+            }
+          ]
+        }
+    ],
+    
+  "templates": [
+    "collection",
+    "list-collections",
+    "index",
+    "product"
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
+

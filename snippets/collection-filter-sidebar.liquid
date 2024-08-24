@@ -1,0 +1,57 @@
+<div class="category-list">
+  <div class="multi-select-wrap">
+    <div class="select-box-top">
+      {% for block in section.blocks %}
+        {% if block.type == 'tag_filter' %}
+          {% assign heading = block.settings.filter_heading %}
+          {% assign filter_tags = block.settings.filter_tags | split: ',' %}
+          {% assign current_tags = collection.all_tags %}
+          {% assign has_tags = false %}
+          {% for t in filter_tags %}
+            {% assign tag = t | strip %}
+            {% if current_tags contains tag %}
+              {% assign has_tags = true %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+          {% if has_tags %}
+          <div class="select-box">
+            <div class="accordion-item">
+              <h6 class="accordion-header" id="{{ heading | handleize }}-heading">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{ heading | handleize }}-Collapse" aria-expanded="true" aria-controls="{{ heading | handleize }}-Collapse">
+                  {{ heading }}
+                </button>
+              </h6>
+              <div id="{{ heading | handleize }}-Collapse" class="accordion-collapse collapse show" aria-labelledby="{{ heading | handleize }}-heading">
+                <div class="accordion-body">
+                  <ul class="custom-checkbox">
+                    {% for t  in filter_tags %}
+                        {% assign tag = t | strip %}
+                        {% if current_tags contains tag %}
+                          {% assign tag_count = 0 %}
+                          {% for product in collection.products %}
+                            {% if product.tags contains tag %}
+                              {% assign tag_count = tag_count | plus: 1 %}
+                            {% endif %}
+                          {% endfor %}
+                          <li>
+                            <label class="container" for="{{ tag | handle }}">
+                              {{ tag | remove:'collection_' | replace: '_', ' '  }} ({{ tag_count }})
+                              <input type="checkbox" class="filter-checkbox coll-filter" id="{{ tag | handle }}" value="{{ tag | handle }}">
+                              <span class="checkmark"></span>
+                            </label>
+                          </li>
+                        {% endif %}  
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+

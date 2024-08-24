@@ -1,0 +1,153 @@
+input[type="radio"] {
+  display: none;
+}
+.new-hyper-section-slider .card {
+  border: none;
+  background-color: transparent;
+}
+.new-hyper-section-slider .card p {
+/*   font-size: 24px; */
+  line-height: 28px;
+  font-family: myFontMedium, sans-serif;
+  max-width: 415px;
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 20px;
+}
+.card {
+  position: absolute;
+  width: 60%;
+  height: auto;
+  left: 0;
+  right: 0;
+  margin: auto;
+  transition: transform 0.4s ease;
+  cursor: pointer;
+}
+
+.cards {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 20px;
+}
+.new-hyper-section-slider .card span{
+  height: 510px;
+}
+.new-hyper-section-slider .card span img{
+  height: 100%;
+  width: 100%;
+  border-radius: 20px;
+}
+.new-hyper-section-slider  .container{
+  position: relative;
+}
+.new-hyper-section-slider .hyper-slider-icons img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+#item-1:checked ~ .cards #song-3,
+#item-2:checked ~ .cards #song-1,
+#item-3:checked ~ .cards #song-2 {
+  transform: translatex(-30%) scale(0.6);
+  opacity: 1;
+  z-index: 0;
+}
+
+#item-1:checked ~ .cards #song-2,
+#item-2:checked ~ .cards #song-3,
+#item-3:checked ~ .cards #song-1 {
+  transform: translatex(30%) scale(0.6);
+  opacity: 1;
+  z-index: 0;
+}
+
+#item-1:checked ~ .cards #song-1,
+#item-2:checked ~ .cards #song-2,
+#item-3:checked ~ .cards #song-3 {
+  transform: translatex(0) scale(1);
+  opacity: 1;
+  z-index: 1;
+}
+
+.player {
+  min-width: 415px;
+  margin-top: 660px;
+}
+
+.upper-part {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  height: 36px;
+  overflow: hidden;
+}
+
+.song-info {
+  display: block;
+}
+.song-info p {
+  text-align: center;
+  font-family: myFontMedium, sans-serif;
+  font-size: 24px;
+}
+.new-hyper-section-slider .player .more-post-btn {
+  margin-top: 40px;
+}
+.new-hyper-section-slider .hyper-slider-icons {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.new-hyper-section-slider .hyper-slider-icons img {
+  cursor: pointer;
+}
+.new-hyper-section-slider .hyper-slider-icons .prev-icon {
+  position: absolute;
+  left: 90px;
+  height: 30px;
+  width: 30px;
+}
+.new-hyper-section-slider .hyper-slider-icons .next-icon {
+  position: absolute;
+  right: 90px;
+  height: 30px;
+  width: 30px;
+}
+.info-area {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  /* left: 30px; */
+  transition: transform 0.4s ease-in;
+}
+
+#item-2:checked ~ .player #test {
+  transform: translateY(0);
+}
+
+#item-2:checked ~ .player #test {
+  /* transform: translateY(-40px); */
+  transform: translateY(-38px);
+}
+
+#item-3:checked ~ .player #test {
+  /* transform: translateY(-80px); */
+  transform: translateY(-75px);
+}
+.new-hyper-section.new-hyper-section-slider {
+  display: none;
+}
+
+@media screen and (min-width: 1440px) {
+  .new-hyper-section.new-hyper-section-slider {
+    display: block;
+  }
+}

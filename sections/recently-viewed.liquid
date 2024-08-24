@@ -1,0 +1,72 @@
+<div class="recently-viewed">
+  <h2>Recently Viewed</h2>
+  <ul id="recently-viewed-products">
+    {{ recently_viewed_products }}===
+    {% for product in recently_viewed_products %}
+      <li>
+        <a href="{{ product.url }}">
+          <img src="{{ product.featured_image | img_url: 'small' }}" alt="{{ product.title }}">
+          <span>{{ product.title }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+
+<script>
+  // Store and retrieve recently viewed products in local storage
+var recentlyViewedProducts = [];
+var recentlyViewedLimit = 5;
+
+function storeRecentlyViewedProduct(product) {
+  var storedProducts = localStorage.getItem('recentlyViewedProducts');
+
+  if (storedProducts) {
+    recentlyViewedProducts = JSON.parse(storedProducts);
+  }
+
+  // Remove any existing occurrences of the product
+  recentlyViewedProducts = recentlyViewedProducts.filter(function (p) {
+    return p.url !== product.url;
+  });
+
+  // Add the current product at the beginning
+  recentlyViewedProducts.unshift(product);
+
+  // Limit the recently viewed products to a certain number
+  recentlyViewedProducts = recentlyViewedProducts.slice(0, recentlyViewedLimit);
+
+  localStorage.setItem('recentlyViewedProducts', JSON.stringify(recentlyViewedProducts));
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  var productData = {
+    title: '{{ product.title }}',
+    url: '{{ product.url }}',
+    featured_image: '{{ product.featured_image | img_url: "small" }}'
+  };
+
+  storeRecentlyViewedProduct(productData);
+});
+</script>
+
+{% schema %}
+  {
+    "name": "Recently Viewed",
+    "settings": [],
+    "presets": [
+      {
+        "name": "Recently Viewed",
+        "blocks": [
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

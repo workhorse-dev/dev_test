@@ -1,0 +1,70 @@
+{% comment %}
+  title: section.settings.title,
+  title_color: section.settings.title_color,
+  blocks: section.blocks
+{% endcomment %}
+
+
+  {% if title_color != blank %}
+    <style>
+      .section__{{section_id}} h2 {
+        color: {{ title_color }};
+      }
+    </style>
+  {% endif %}
+
+<section class="icon-values landing-section section__{{section_id}}">
+
+  {% if title != blank %}
+    <h2 class="image-block__heading main-heading">{{ title | newline_to_br }}</h2>
+  {% endif %}
+
+  <div class="images-with-content">
+
+    {% for block in blocks %}
+
+
+      <div class="image-with-content">
+
+        {% if block.settings.url != blank %}
+          <a href="{{ block.settings.url }}"{% unless block.settings.url contains "mailto:" or block.settings.url contains "tel:"  %} target="_blank"{% endunless %}>
+        {% endif %}
+
+        {% comment %}
+        {% if block.settings.title != blank %}
+          <h3 class="title">{{ block.settings.title }}</h3>
+        {% endif %}
+        {% endcomment %}
+
+        {% assign image = block.settings.image %}
+        {% if image %}
+          {% comment %}
+            <style>
+              {% if image %}
+              .block-{{ block.id }} {
+                background-image: url("{{ image | img_url: '700x' }}");
+              }
+              {% endif %}
+            </style>
+            block-{{ block.id }}
+          {% endcomment %}
+          <div class="image-container">
+            <img src="{{ image | img_url: '200x' }}">
+          </div>
+        {% endif %}
+
+        {% if block.settings.title != blank %}
+          <p>{{ block.settings.title | newline_to_br }}</p>
+        {% endif %}
+
+        {% if block.settings.url != blank %}
+          </a>
+        {% endif %}
+
+      </div>
+
+
+    {% endfor %}
+  </div>
+
+</section>

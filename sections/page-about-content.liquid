@@ -1,0 +1,73 @@
+<section class="about-hyper-section about_bg">
+<div class="container">
+  <div class="inside-container">
+    <div class="about-hyper-content">
+      <h2 class="main-heading about_heading">{{ section.settings.heading }}</h2>
+      <div class="about_content">{{ section.settings.abount_content }}</div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<style>
+ .about_bg{
+   background-color: {{section.settings.about_bg}};
+ }
+ .about_heading{
+   color: {{section.settings.about_heading}};
+ } 
+ .about_content{
+   color: {{section.settings.abountContentColor}};
+ }
+</style>
+      
+{% schema %}
+  {
+    "name": "About Us Content",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section Background Style"
+      },
+      {
+        "type": "color",
+        "id": "about_bg",
+        "default": "#fff",
+        "label": "Section Background Color"
+      },
+      {
+        "type": "header",
+        "content": "About Content"
+      },
+      {
+        "type":"text",
+        "id":"heading",
+        "label":"Heaading"
+      },
+      {
+        "type": "color",
+        "id": "about_heading",
+        "default": "#000",
+        "label": "Heading Color"
+      },
+      {
+        "type": "textarea",
+        "id": "abount_content",
+        "label": "About Content"
+      },
+      {
+        "type": "color",
+        "id": "abountContentColor",
+        "default": "#000",
+        "label": "Content Color"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

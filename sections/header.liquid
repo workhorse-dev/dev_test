@@ -1,0 +1,552 @@
+{% if section.settings.enable_sticky_header %} 
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      $(window).scroll(function () {
+        if ($(window).scrollTop() >= 100) {
+          $("#shopify-section-sections--14578441257022__header").addClass("fixed-header");
+        } else {
+          $("#shopify-section-sections--14578441257022__header").removeClass("fixed-header");
+        }
+      });
+    });
+  </script> 
+{% endif %}
+<style>
+  .custom-header{
+    background-color: {{section.settings.header_bg}};
+  }
+  .custom-header .header-nav-menu li a {
+   color: {{section.settings.header_color}}; 
+  }
+  .custom-header .header-nav-menu li a:hover {
+    color: {{section.settings.header_hover_color}};
+  }
+  .custom-header .header-nav-menu .dropdown-content .item-container ul li a:hover{
+    color: {{section.settings.default_element_hover_color}};
+  }
+  .custom-header .header-nav-menu .dropdown-content .item-container ul li a{
+    color: {{ section.settings.default_element_color }}
+  }
+  .custom-header .header-nav-menu .dropdown-content{
+    background: {{section.settings.header_menu_bg}};
+  }
+  .search-bar input.form-control{
+    color: {{section.settings.header_search_color}};
+    border-color: {{section.settings.header_search_border}};
+  }
+  div.snize-ac-results li.snize-category a.snize-view-link{
+    color: {{ section.settings.coll_suggest_color }};
+  }
+  div.snize-ac-results span.snize-title{
+    color: {{ section.settings.prod_suggest_color }};
+  }
+  div.snize-ac-results .snize-price-list{
+    color: {{ section.settings.suggestPrice_color }};
+  }
+  div.snize-ac-results li.snize-view-all-link span{
+    color: {{section.settings.view_all_items}};
+  }
+  {% comment %}
+   div.snize-ac-results.snize-ac-results-mobile, div.snize-ac-results.snize-ac-results-mobile ul{
+     display:none; 
+  }
+  .snize-mobile-top-panel{
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+  } 
+  {% endcomment %}
+  div.snize-ac-results.snize-ac-results-mobile li.snize-mobile-top-panel{
+    height: 66px;
+  }
+</style>
+<header class="custom-header" onmouseleave="handleHeaderMouseLeave()">
+  <div class="container">
+    <div class="inside-container">
+      <div class="d-flex justify-content-between">
+        <div class="d-flex align-items-center">
+          <div class="d-flex align-items-center">
+            <div class="mobile-menu-icon">
+              <a href="#menu" class="tab-menu-open toggle-no"><img src="{{'hamburg.png' | asset_url }}" loading="lazy" alt="hamburger icon"/></a>
+            </div>
+            <a href="{{ routes.root_url }}" class="desktop-logo">
+              {%- if settings.logo != blank -%}
+               {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
+                <img src="{{settings.logo | img_url:'200x', scale: 2 }}"  class="header-logo img-fluid" alt="logo">
+              {%- else -%}
+                <span class="h2">{{ shop.name }}</span>
+              {%- endif -%}
+            </a>
+          </div>
+             <ul class="header-nav-menu">
+            {%- for link in section.settings.menu.links -%}
+              {% assign grandparent = link.title | handleize %}
+              <li  class="nav-dropdown {{link.title | handleize }}" onmouseover="handleNavOpen('{{link.title | handleize }}')">
+                <a class="nav-Itemlink {% if link.current %} active{% endif %}" aria-current="page" href="{{ link.url }}">{{ link.title }}</a>
+                {% if link.links.size > 0 %}  
+                <div class="dropdown-content {% if grandparent == "support" %}support-dropdown{% endif %} {% if grandparent == "device" %}device-dropdown{% endif %}" id="{{link.title | handleize }}">
+                  <div class="container">
+                    <div class="row">
+                      {% if grandparent != "support" and grandparent != "device" %}
+                      <div class="col-12 col-sm-12 col-md-4 col-lg-2">
+                      {% for subLink in link.links %}
+                          {% if forloop.index == 1 %}
+                            <div class="item-container mb-0">
+                              <h5 class="mb-2 nav_heading mega-menu-title"><a href="{{ subLink.url }}">{{subLink.title}}</a></h5>
+                              {% if subLink.links.size > 0 %}        
+                              <ul>
+                                {%- for grandchildlink in subLink.links -%} 
+                                  <li><a href="{{ grandchildlink.url }}">{{grandchildlink.title}}</a></li>
+                                {%- endfor -%}
+                              </ul>
+                              {% endif %}
+                           </div>
+                          {% endif %}
+                          {% if subLink.links.size > 0 and forloop.index == 2 %}
+                            <div class="item-container mb-0">
+                               <h5><a href="{{ subLink.url }}">{{subLink.title}}</a></h5>
+                                <ul>
+                                  {%- for grandchildlink in subLink.links -%} 
+                                    <li><a href="{{ grandchildlink.url }}">{{grandchildlink.title}}</a></li>
+                                  {%- endfor -%}
+                                </ul>
+                              </div>
+                          {% endif %}
+                      {% endfor %}
+                      </div>
+                      <div class="col-12 col-sm-12 col-md-8 col-lg-10 ps-4">
+                        {% comment %}
+                        <div class="d-flex justify-content-between">
+                          {% for subLink in link.links %}
+                            {% if forloop.index >= 3 %}
+                              {% assign mod = forloop.index0 | modulo: 2 %}
+                               {% if mod == 0 %}  
+                                  {% if forloop.index0 != 0 %}
+                                   <div class="{{ forloop.index0 }}">
+                                  {% endif %}
+                                   <div class="item-container hello-{{ forloop.index }}">
+                                     <h5 class="mb-2 nav_heading"><a href="{{ subLink.url }}">{{ subLink.title }}</a></h5>
+                                     {% if subLink.links.size > 0 %}   
+                                      <ul>
+                                        {%- for grandchildlink in subLink.links -%} 
+                                         <li><a href="{{ grandchildlink.url }}">{{grandchildlink.title}}</a></li>
+                                        {%- endfor -%}
+                                      </ul>
+                                     {% endif %} 
+                                  </div>
+                                 {% else %}
+                                   <div class="item-container test-{{ forloop.index }}">
+                                    <h5 class="mb-2 nav_heading"><a href="{{ subLink.url }}">{{ subLink.title }}</a></h5>
+                                      {% if subLink.links.size > 0 %}   
+                                      <ul>
+                                      {%- for grandchildlink in subLink.links -%} 
+                                         <li><a href="{{ grandchildlink.url }}">{{grandchildlink.title}}</a></li>
+                                        {%- endfor -%}
+                                      </ul>
+                                      {% endif %}
+                                  </div>
+                                 </div>
+                              {%  endif %}
+                            {% endif %}
+                           {% endfor %}
+                         </div>
+                        {% endcomment %}
+                        <div class="d-flex justify-content-between ">
+                          <div class="row row-cols-5 sub-menu-row">
+                            {% for subLink in link.links %}
+                              {% if forloop.index >= 3 %}
+                                <div class="col">
+                                   <div class="item-container">
+                                     <h5 class="mb-2 nav_heading"><a href="{{ subLink.url }}">{{ subLink.title }}</a></h5>
+                                     {% if subLink.links.size > 0 %}   
+                                      <ul>
+                                        {%- for grandchildlink in subLink.links -%} 
+                                         <li><a href="{{ grandchildlink.url }}">{{grandchildlink.title}}</a></li>
+                                        {%- endfor -%}
+                                      </ul>
+                                     {% endif %} 
+                                    </div> 
+                                </div> 
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                        
+                        </div>
+                        </div>
+                        {% else %}
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-12">
+                          <div class="item-container mb-0">
+                            {% for subLink in link.links %}
+                            <h5><a href="{{ subLink.url }}">{{ subLink.title }}</a></h5>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+               {% endif %}
+              </li>
+            {%- endfor -%}
+            <li class="top-level has-dropdown language-menu">
+              <a class="site-nav__anchor" href="#" data-nav-trigger="language" aria-haspopup="true" onmouseover="handleNavOpen('language-menu')">Language
+                <svg class="arrow-right " aria-hidden="true" focusable="false" role="presentation" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">      <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M10.4696 14.4697L11.5302 15.5303L17.0605 10L11.5302 4.46967L10.4696 5.53033L14.1893 9.25005L4 9.25005V10.7501L14.1892 10.7501L10.4696 14.4697Z"></path>    </svg>
+              </a>
+              <div class="dropdown-content" id="language-menu">
+                {% include 'gtranslate', float: 'yes' %}
+              </div>
+            </li>
+          </ul>
+            
+            <div class="amazon-badge" style="margin-left: 10px;">
+              <a href ="https://www.hypershop.com/collections/buy-with-prime"><img src="https://cdn.shopify.com/s/files/1/0872/6416/files/amazon-badge-blue.png?v=1696361790" alt="Buy With Prime" width="50"></a>
+            </div>
+        </div>
+        <div class="d-flex align-items-center">
+          {% if section.settings.enable_search_bar %}
+            <div class="input-group no-searchbar search-bar desktop_search">
+              <form class="search-form search-bar__form d-flex" action="{{ routes.search_url }}" method="get" role="search">
+               <input
+                type="text"
+                name="q"
+                placeholder="Search"
+                {%- if settings.predictive_search_enabled -%}
+                role="combobox"
+                aria-autocomplete="list"
+                aria-owns="predictive-search-results"
+                aria-expanded="false"
+                aria-label="Search"
+                aria-haspopup="listbox"
+                {% endif %}
+                class="form-control"
+                data-predictive-search-drawer-input/>
+                <input type="hidden" name="options[prefix]" value="last" aria-hidden="true" />
+                <button class="search-bar__submit search-form__submit border-0 desktopsearch-icon" type="submit" data-search-form-submit>    
+                  <img src="{{'search-icon.png' | asset_url }}" alt="search icon"/>
+                </button> 
+              </form>
+              <div class="mobilesearch-icon">
+                <img src="{{'search-icon.png' | asset_url }}" alt="search icon" onclick="openSearch()"/>
+              </div>
+              <div id="mySidenav" class="sidenav" role="dialog" aria-modal="true" aria-label="Search">
+              <a href="javascript:void(0)" class="closebtn" onclick="closeSearch()">&times;</a>
+              <div class="opened-searchbar" data-predictive-search-drawer>
+                <div class="input-group search-bar mobile-bar">
+                  <div class="search-form__container" data-search-form-container>
+                      <form class="search-form search-bar__form" action="{{ routes.search_url }}" method="get" role="search">
+                        <div class="search-form__input-wrapper mobile_input">
+                          <input type="text" name="q"  class="form-control  mobile_search" placeholder="Search" role="combobox" aria-autocomplete="list" aria-owns="predictive-search-results" aria-expanded="false"  aria-label="Search" aria-haspopup="listbox" data-predictive-search-drawer-input/>
+                          <input type="hidden" name="options[prefix]" value="last" aria-hidden="true" />
+                          <div class="predictive-search-wrapper predictive-search-wrapper--drawer" data-predictive-search-mount="drawer"></div>
+                          <button class="search-bar__submit search-form__submit" type="submit" data-search-form-submit>    
+                            <img src="{{'search-icon.png' | asset_url }}" class="mobileoverlay_icon" alt="search icon" />
+                          </button> 
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+      
+            <ul class="header-nav-icons">
+              <a class="site-header__icon site-util--language has-dropdown small--hide" data-nav-trigger="language" aria-haspopup="true">
+                <svg width="24" height="24" id="Layer_5" data-name="Layer 5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 114.82 114.82" class="language-menu-icon"><defs><style>.cls-1{fill:#fff;stroke:#231f20;stroke-linecap:round;stroke-linejoin:round;stroke-width:9.23px;}</style></defs><title></title><path class="cls-1" d="M78.87,13.69H36a27.82,27.82,0,0,0-2.84,55.5L55,101.13V69.34H78.87a27.83,27.83,0,1,0,0-55.65Z"/><polyline class="cls-1" points="48.71 52.31 58.07 31.04 67.43 52.31"/><line class="cls-1" x1="51.28" y1="46.94" x2="64.59" y2="46.94"/></svg>
+              </a>
+             {%- if shop.customer_accounts_enabled -%}
+              <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="">
+                {% render 'icon-account' %}
+                <span class="visually-hidden">
+                  {%- liquid
+                    if customer
+                      echo 'customer.account_fallback' | t
+                    else
+                      echo 'customer.log_in' | t
+                    endif
+                  -%}
+                </span>
+              </a>
+              {%- endif -%}
+              <a href="javascript:void(0);" id="cart-icon-bubble" class="cart_icon site-header__icon site-header__cart pe-0 my-cart">
+                {% render 'icon-cart' %}
+                <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+                <div id="CartCount" class="site-header__cart-count{% if cart.item_count == 0 %} d-none{% endif %}">
+                  
+                    <span aria-hidden="true">{{ cart.item_count }}</span>
+                
+                </div>
+              </a>
+              <div class="cart-box clearfix {% if cart.item_count > 1 %} cart_box_height{% endif %}" id="mini-cart">
+                <div class="cart-heading">Cart
+                  <a href="javascript:void(0);" id="cart-dropdown-x-out"><i class="fas fa-times"></i></a>
+                </div>
+                <form action="{{ routes.cart_url }}" class="cart__contents critical-hidden" method="post" id="cart">
+                  <div class="cartelements">
+                  </div>
+                  
+                  <div class="total-checkout">
+                      <p class="total_price">Total: <span>{{ cart.total_price | money_with_currency }}</span></p>
+                      <span class="d-block ship_message">Shipping & taxes calculated at checkout</span>
+                      <div class="cart-checkout">
+                          <a href="/cart/" class="view-cart">View Cart</a>
+                          <a href="/checkout/" class="checkout">Checkout</a>
+                      </div>
+                  </div>
+                </form>
+              </div>
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <nav id="menu">
+    <a href="javascript:;" class="cross-icon-mobile d-none">
+      <img src="{{'close-x.png' | asset_url }}" alt="close icon"/>
+    </a>
+    <ul class="navbar-nav">
+    {%- for link in section.settings.menu.links -%}
+      {%- if link.links != blank -%}
+        <li class="nav-item nav-dropdown">
+          <a class="nav-link {% if link.current %} active{% endif %} p-3" aria-current="page" href="{% if link.title == "Products" %}#mm-3{% elsif link.title == "Support" %}#mm-19{% else %}{{ link.url  }}{% endif %}">{{ link.title }}  </a>
+          <ul>
+        
+            {%- for childlink in link.links -%}
+              {%- if childlink.links != blank -%}
+              <li class="nav-item nav-dropdown">
+               
+                <a class="nav-link {% if childlink.current %} active {% endif %} p-3" aria-current="page">{{ childlink.title }}</a>
+                <ul>
+                  {%- for grandchildlink in childlink.links -%}
+                    <li class="nav-item nav-dropdown"><a class="nav-link p-3" href="{{ grandchildlink.url }}">{{grandchildlink.title}}</a></li>
+                  {%- endfor -%}  
+                </ul>
+              </li>
+             
+              {% else %}
+                <li class="nav-item nav-dropdown"><a class="nav-link p-3" href="{{ childlink.url }}">{{ childlink.title }}</a></li>
+                
+              {% endif %}
+            {%- endfor -%}
+            {% if link.title == "Products"  %}
+            <div class="border-0 mm-listitem d-block">
+              <h5 class="featured_title my-2">{{ section.settings.image_heading }}</h5>
+              <div class="img-item-container m-0">
+                {%- for block in section.blocks -%}
+                  {%- case block.type -%}
+                    {%- when 'image' -%}
+                      {% if block.settings.enableimage %}
+                      <div class="img-box">
+                        <a href="{{ block.settings.link_url }}">
+                          <img src="{{ block.settings.MenuImage |img_url:'250x' }}" alt="{{ block.settings.linktext }}" class="img-fluid"/>
+                          <span class="d-block">{{ block.settings.linktext }}</span>
+                        </a>
+                      </div>
+                      {% endif %}    
+                  {%- endcase -%}
+                {%- endfor -%}
+              </div> 
+            </div>
+            {% endif %}
+          </ul>
+        </li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link p-3" href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endif -%}
+      {%- endfor -%}
+     </ul>
+  </nav>
+                        
+</header>
+             
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    {% if settings.logo %}
+      "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
+    {% endif %}
+    "sameAs": [
+      {{ settings.social_twitter_link | json }},
+      {{ settings.social_facebook_link | json }},
+      {{ settings.social_pinterest_link | json }},
+      {{ settings.social_instagram_link | json }},
+      {{ settings.social_tiktok_link | json }},
+      {{ settings.social_tumblr_link | json }},
+      {{ settings.social_snapchat_link | json }},
+      {{ settings.social_youtube_link | json }},
+      {{ settings.social_vimeo_link | json }}
+    ],
+    "url": {{ request.origin | append: page.url | json }}
+  }
+</script>
+{%- if request.page_type == 'index' -%}
+  {% assign potential_action_target = request.origin | append: routes.search_url | append: "?q={search_term_string}" %}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ potential_action_target | json }},
+        "query-input": "required name=search_term_string"
+      },
+      "url": {{ request.origin | append: page.url | json }}
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "class": "section-header",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "default": true,
+      "label": "Sticky Header",
+      "info": "Enable or Disable Sticky Header option"
+    },
+    {
+      "type": "color",
+      "id": "header_bg",
+      "default": "#f3f3f3",
+      "label": "Header Background Color"
+    },
+    {
+      "type": "color",
+      "id": "header_color",
+      "default": "#000",
+      "label": "Header Bar Font-Link Color"
+    },
+    {
+      "type": "color",
+      "id": "header_hover_color",
+      "default": "#3c3fbc",
+      "label": "Header Bar Hover Font-Link Color"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "t:sections.header.settings.menu.label"
+    },
+    {
+      "type": "color",
+      "id": "header_menu_bg",
+      "default": "#f3f3f3",
+      "label": "Drop Down Background Color"
+    },
+    {
+      "type": "color",
+      "id": "header_search_color",
+      "default": "#212529",
+      "label": "Search Bar Text Color"
+    },
+	{
+      "type": "color",
+      "id": "header_search_border",
+      "default": "#d9d9d9",
+      "label": "Search Bar Border Color"
+    },
+    {
+        "type": "header",
+        "content": "Drop Down Default Link Settings"
+    },
+    {
+      "type": "color",
+      "id": "default_element_color",
+      "default": "#000",
+      "label": "Drop Down default link color"
+    },
+	{
+      "type": "color",
+      "id": "default_element_hover_color",
+      "default": "#3a3a3a",
+      "label": "Drop Down default link hover color"
+    },	
+    {
+      "type": "checkbox",
+      "id": "enable_search_bar",
+      "default": true,
+      "label": "Enable Search Bar",
+      "info": "Enable Search Bar"
+    },
+    {
+      "type": "color",
+      "id": "coll_suggest_color",
+      "default": "#3C3FBC",
+      "label": "In Suggestion catogories link color"
+    }, 
+    {
+      "type": "color",
+      "id": "prod_suggest_color",
+      "default": "#3C3FBC",
+      "label": "In Suggestion Product link color"
+    },
+    {
+      "type": "color",
+      "id": "suggestPrice_color",
+      "default": "#3C3FBC",
+      "label": "In Suggestion Price color"
+    },
+    {
+      "type": "color",
+      "id": "view_all_items",
+      "default": "#3C3FBC",
+      "label": "In suggestion view all Items color"
+    },
+    {
+      "type":"text",
+      "id":"image_heading",
+      "label":"Features Heading",
+      "default": "Featured"
+    }
+    
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name":"menu image",
+      "settings":[
+        {
+          "type":"text",
+          "id":"mega_link_parent",
+          "label":"Menu Parent link"
+        },
+        {
+          "type": "header",
+          "content": "Menu Item Image"
+        },
+        {
+          "type":"checkbox",
+          "id":"enableimage",
+          "label":"Show/Hide Image",
+          "default":true
+        },
+        {
+          "type":"url",
+          "id":"link_url",
+          "label":"Link URL"
+        },
+        {
+          "type":"text",
+          "id":"linktext",
+          "label":"Link Text",
+          "default":"HyperDrive Next Hubs"
+        },
+        {
+          "type":"image_picker",
+          "id" :"MenuImage",
+          "label":"Menu Image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

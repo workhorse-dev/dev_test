@@ -1,0 +1,95 @@
+
+<div class="bg-collection-list">  
+  <div class="container">
+    <div class="inside-container">
+      <div class="banner-section">
+        <div class="banner-content text-start">
+          <h3 class="main-heading">{{ section.settings.title | escape }}</h3>
+          <p class="sub-heading">{{ section.settings.description | escape }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="custom-breadcrumb-section">
+  <div class="container">
+    <div class="inside-container">
+      <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <a href="/collections/">{{ section.settings.title | escape }}</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</section>
+<div class="container collection-list-grid">
+  <div class="inside-container">
+    {%- paginate collections by section.settings.products_per_page -%}
+      <div class="row">
+        {%- for collection in collections -%}
+          <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 coll-grid-item">
+            <a href="{{ collection.url }}" class="collection_url">
+              <div class="collection-listing d-flex flex-column align-items-center">
+                <div class="collection-img">            
+                  <img src="{{ collection.products.first | img_url: 'medium' }}"  alt="{{ collection.title | escape }}" display="block" />            
+                </div>
+                <h4 class="title heading-type3">{{collection.title}}</h4>                           
+              </div>
+            </a>
+          </div>  
+        {%- endfor -%}
+      </div>
+     {% render 'pagination', paginate: paginate %} 
+    {%- endpaginate -%} 
+  </div>
+</div>
+<style>
+  .bg-collection-list{
+    {% if section.settings.image != blank %}
+    background-image:url("{{section.settings.image | img_url:'master'}}");
+    {% endif %}  
+    padding: 200px 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+</style>
+{% schema %}
+{
+  "name": "t:sections.main-list-collections.name",
+  "class": "section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "t:sections.main-list-collections.settings.title.label",
+      "default": "Collections"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "description",
+      "label": "Collections Description",
+      "default": "Collections"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Collection Image"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 6,
+      "max": 50,
+      "step": 1,
+      "label": "How many products per page",
+      "default": 30
+    }
+  ]
+}
+{% endschema %}

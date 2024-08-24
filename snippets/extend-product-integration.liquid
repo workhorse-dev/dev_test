@@ -1,0 +1,87 @@
+<script defer="defer">
+
+  // Run scripts on DOMContentLoaded to avoid affecting site load time
+  window.addEventListener('DOMContentLoaded', function(){
+
+    // Checks if Extend lives in the window and the active currency is USD before showing Extend offers
+    if (window.Extend && window.ExtendShopify && window.Shopify.currency.active === "USD") {
+
+      /************************/
+      /* Initial Variables */
+      /************************/
+      var productForm = document.querySelector('form[action="/cart/add"]'); // Change this to the product form element
+      var addToCartButton = productForm.querySelector('button[name="add"]'); // Change this to the Add-To-Cart element
+      var extendOffer = productForm.querySelector('#extend-offer'); // extendOffer element
+
+      /************************/
+      /* initProductOffer */
+      /************************/
+      // Initializes product offers and handles ATC button functionality for the main PDP ATC
+      function initProductOffer() {
+
+        // Fail safes
+        if(!productForm || !addToCartButton || !extendOffer) return;
+
+        // Check if product is an extend warranty, if so disable the atc
+        function isExtend() {
+          if(meta.product && meta.product.vendor == "Extend"){
+            addToCartButton.disabled = true;
+          }
+        }
+
+        // Checks if product is an Extend warranty and if so disables 
+        isExtend();
+
+        var variantId;
+
+        //listens for changes to the productForm and sets the activeProduct for extend via variantID
+        window.addEventListener("getVariantId", function(e) {
+          variantId = e.detail.variantId;
+
+          if (variantId) {
+            Extend.setActiveProduct(extendOffer, variantId);
+            isExtend();
+          }
+        });
+
+        // Grabs the variantId from the productForm and renders the initial offers for it
+        variantId = productForm.id.value
+        Extend.buttons.render(extendOffer, {referenceId: variantId })
+
+        // Listens for clicks on ATC button and handles Add-To-Cart functionality
+        addToCartButton.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          var quantityEl = productForm.querySelector('[name="quantity"]');
+          var quantity = quantityEl && quantityEl.value;
+
+          ExtendShopify.handleAddToCart(extendOffer, {
+            quantity: quantity,
+            modal: true,
+            done: function () {
+              // Trigger Analytics
+              if (Extend.analytics) window.Extend.productAnalytics(variantId, quantity);
+              // Submit the form productForm
+              productForm.submit();
+            },
+          });  
+
+        });
+
+      }
+
+      // Initial product offer render
+      initProductOffer();
+    }
+
+  })
+
+</script>
+
+<style>
+
+  #extend-offer {
+    padding-bottom: 5px;
+  }
+
+</style>

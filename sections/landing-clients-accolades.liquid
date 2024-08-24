@@ -1,0 +1,53 @@
+<script
+  type="application/json"
+  data-section-id="{{ section.id }}"
+  data-section-type="landing-clients-accolades"
+>
+</script>
+
+{%
+  include 'landing-clients-accolades',
+  section_id: section.id,
+  title: section.settings.title,
+  title_color: section.settings.title_color,
+  blocks: section.blocks
+%}
+
+{% schema %}
+{
+  "name": "Clients & accolades",
+  "class": "section-landing-clients-accolades",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Heading Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image-item",
+      "name": "Image item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

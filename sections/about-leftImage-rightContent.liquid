@@ -1,0 +1,79 @@
+<section class="product-information-section pt-0">
+<div class="container">
+  <div class="inside-container feature-tab-container">
+    <div class="row align-items-center">
+      <div class="col-12 col-sm-12 col-md-7">
+        <div class="product-imgs">
+          <img src="{{ section.settings.LeftImage | img_url:'710x' }}" alt="cable for devices" class="img-fluid"/>
+        </div>
+      </div>
+      <div class="col-12 col-sm-12 col-md-5 sm-text-center">
+        <h3 class="heading-type2 right_title">{{ section.settings.image_heading }}</h3>
+        <div class="right_content">{{ section.settings.image_subheading }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<style>
+ .about_bg{
+   background-color: {{section.settings.left_bg}};
+ }
+ .right_title{
+   color:{{section.setting.right_title}};
+ } 
+ .right_content{
+   color:{{section.settings.right_content}};
+ } 
+ 
+</style>
+{% schema %}
+  {
+    "name": "About Image & Content",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section Background Style"
+      },
+      {
+        "type": "color",
+        "id": "left_bg",
+        "default": "#fff",
+        "label": "Section Background Color"
+      },
+      {
+        "type": "image_picker",
+        "id": "LeftImage",
+        "label": "Banner Image"
+      },
+      {
+        "type":"text",
+        "id":"image_heading",
+        "label":"Right Heading"
+      },
+      {
+        "type": "color",
+        "id": "right_title",
+        "default": "#000",
+        "label": "Heading Color"
+      },
+      {
+        "type":"textarea",
+        "id":"image_subheading",
+        "label":"Right sub Heading"
+      },
+      {
+        "type": "color",
+        "id": "right_content",
+        "default": "#000",
+        "label": "Heading Color"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

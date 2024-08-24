@@ -1,0 +1,113 @@
+<section class="offerbar-section">
+  <div class="container">
+    <div class="offerbar-container">
+      <div class="owl-carousel offerbar-carousel">
+        {%- for block in section.blocks -%}
+            {%- case block.type -%}
+             {%- when 'offers' -%}
+              <div class="item">
+                {% if block.settings.icon %} {{block.settings.icon}} {% endif %}{{block.settings.heading}} {% if block.settings.link %}<a class="btn_link" href="{{block.settings.link}}">{{block.settings.label}}</a>{% endif %}
+              </div>
+            {% endcase %}
+          {% endfor %} 
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .offerbar-section{
+    background-color: {{section.settings.offer_bar_bg}};
+  }
+  .offer-text{
+    color: {{section.settings.offer_bar_color}};
+    font-size:{{section.settings.offertext_size}}px;
+    text-align:center;
+  }
+  .offerbar-section .item .btn_link{
+    color:{{section.settings.offer_link_color}};
+  }
+  
+</style>
+{% schema %}
+  {
+    "name": "Offer Bar",
+    "settings": [
+      {
+        "type": "color",
+        "id": "offer_bar_bg",
+        "default": "#ed8c00",
+        "label": "Offer Bar Background Color"
+      },
+      {
+        "type": "color",
+        "id": "offer_bar_color",
+        "default": "#fff",
+        "label": "Offer Bar Font-Link Color"
+      },
+      {
+        "type": "range",
+        "id": "offertext_size",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Offer Text Font Size",
+        "default": 16
+      },
+      {
+        "type": "color",
+        "id": "offer_link_color",
+        "default": "#fff",
+        "label": "Offer Bar Link Color"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "offers",
+        "name": "offers",
+         "settings": [
+            {
+              "type": "text",
+              "id": "icon",
+              "label": "Icon",
+              "info" : "Please add cdn image link or svg icon code"
+            },
+            {
+              "type": "textarea",
+              "id": "heading",
+              "label": "Heading (Simple TEXT or HTML)",
+              "info" : "Please include offer HTML Or Text here"
+            },
+            {
+              "type": "text",
+              "id": "label",
+              "label": "Button Label",
+              "info" : "Please include button text here"
+            },          
+            {
+              "type": "url",
+              "id": "link",
+              "label": "Button Link",
+              "info" : "Please include button Link here"
+            }
+         ]
+      }
+    ],
+     "presets": [
+       {
+         "name":"Offer Bar Slider",
+          "blocks":[
+            {
+              "type":"offers"
+            }
+          ]
+       }
+     ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

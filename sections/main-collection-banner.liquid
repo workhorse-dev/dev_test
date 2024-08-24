@@ -1,0 +1,159 @@
+<style>  
+  {% if collection.image %}
+    .category-banner-section {
+      background: url({{ collection.image | img_url: 'master' }});
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+    }
+  {% else %}    
+    .category-banner-section {background: url({{section.settings.image | img_url:'master'}});background-repeat: no-repeat;background-size: cover;}
+  {% endif %}
+  {% if collection.handle == 'hubs-and-adapters' %}
+    .collection-title{
+      color: {{section.settings.adapter_heading_color}};
+    }
+    .coll-description p, .coll-description span{
+      color: {{section.settings.adapter_description_color}};
+    }
+  {% elsif collection.handle == '2023-black-friday' or  collection.handle == 'cyber-monday-2023' or collection.handle == 'black-friday-doorbusters-great-deals-from-35-to-60-off' or collection.handle == 'up-to-60-off-docks-and-hubs-for-black-friday' or collection.handle == 'up-to-50-off-chargers-and-battery-packs-for-black-friday' or collection.handle=='up-to-40-off-sleeves-for-black-friday' %}
+    .collection-title{
+      color: {{section.settings.blackfriday_head_color}};
+    }
+    .coll-description p, .coll-description span, .coll-description{
+      color: {{section.settings.blackfriday_des_color}};
+    }
+  {% else %}
+    .collection-title{
+      color: {{section.settings.heading_color}};
+    }
+    .coll-description p, .category-banner-section .coll-description{
+      color: {{section.settings.description_color}};
+    }
+  {% endif %}
+</style>
+<div class="category-banner-parent">
+  <section class="category-banner-section">
+    <div class="container">
+      <div class="inside-container">
+        <div class="cat-banner-desktop">
+          <div class="cat-banner">
+            <h1 class="main-heading collection-title">{{- collection.title | escape -}}</h1>
+            {%- if section.settings.show_collection_description -%} 
+              <h2 class="coll-description">{{ collection.description }}</h2>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="container">
+    <div class="inside-container">
+      <div class="cat-banner-mobile">
+        <div class="cat-banner">
+          <h1 class="main-heading collection-title">{{- collection.title | escape -}}</h1>
+          {%- if section.settings.show_collection_description -%} 
+            <h2 class="coll-description">{{ collection.description }}</h2>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="custom-breadcrumb-section">
+  <div class="container">
+    <div class="inside-container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <a href="/collections/{{ collection.handle }}">{{- collection.title | escape -}}</a>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.main-collection-banner.name",
+  "class": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.main-collection-banner.settings.paragraph.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "default": true,
+      "label": "t:sections.main-collection-banner.settings.show_collection_description.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "default": false,
+      "label": "t:sections.main-collection-banner.settings.show_collection_image.label",
+      "info": "t:sections.main-collection-banner.settings.show_collection_image.info"
+    },
+	{
+      "type": "image_picker",
+      "id": "image",          
+      "label": "Collection Custom Image"
+    },
+    {
+      "type":"header",
+      "content":"Default collection Heading/Subheading Font Picker"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Subheading Color",
+      "default": "#fff"
+    },
+    {
+      "type":"header",
+      "content":"Hubs & Adapters Heading and Subheading Font Picker"
+    },
+    {
+      "type": "color",
+      "id": "adapter_heading_color",
+      "label": "Hubs/Adapters Heading Color",
+      "default": "#000",
+      "info":"This color picker will only work to change the color of the heading on the Hubs/Adapter collection."
+    },
+    {
+      "type": "color",
+      "id": "adapter_description_color",
+      "label": "Hubs/Adapters Subheading Color",
+      "default": "#000",
+      "info":"This color picker will only work to change the color of the subheading on the Hubs/Adapter collection."
+    },
+    {
+      "type":"header",
+      "content":"BF/CM Heading & Subheading Color Picker"
+    },
+    {
+      "type": "color",
+      "id": "blackfriday_head_color",
+      "label": "BF/CM and Doorbusters Heading Color",
+      "default": "#fff",
+      "info":"This color picker will only work to change the color of the heading on the BF/CM collection."
+    },
+    {
+      "type": "color",
+      "id": "blackfriday_des_color",
+      "label": "BF/CM Doorbusters Subheading Color",
+      "default": "#fff",
+      "info":"This color picker will only work to change the color of the subheading on the BF/CM collection."
+    }
+  ]
+}
+{% endschema %}

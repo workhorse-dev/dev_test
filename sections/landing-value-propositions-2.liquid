@@ -1,0 +1,64 @@
+<script
+  type="application/json"
+  data-section-id="{{ section.id }}"
+  data-section-type="landing-value-propositions-2"
+>
+</script>
+
+{%
+  include 'landing-values-propositions',
+  section_id: section.id,
+  title: section.settings.title,
+  title_color: section.settings.title_color,
+  blocks: section.blocks
+%}
+
+{% schema %}
+{
+  "name": "Values propositions 2",
+  "class": "section-landing-values-propositions",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Heading Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image-item",
+      "name": "Image item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type":"url",
+          "id":"coll_url",
+          "label":"Collection URL"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

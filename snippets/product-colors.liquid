@@ -1,0 +1,43 @@
+{% comment %}
+    Custom colors can be defined in this file. All new colors shoudl be added
+    with the following format:
+
+    $color name = #HEXCODE,
+
+    All new color lines MUST end with a comma, or the code will not render
+    properly. The only exception is the very last color assignment, where a
+    comma is not necessary.
+{% endcomment %}
+
+{% assign
+	colors = '
+		$black = #000000,
+    $black/orange = #E24E23,
+    $carbon fiber = #3a3939,
+    $comic blond = #0c97ed,
+    $comic pink = #de76b6,
+    $eggs gray = #b5b5b5,
+    $eggs green = #8cd8c8,
+    $gold = #d9bf30,
+    $graphite = #6f7172,
+    $gray = #9a9a9a,
+    $leopard = #d99504,
+    $lily day = #ccc66c,
+    $lily night = #212038,
+    $pink = #ffb0e1,
+    $platinum = #cacbcc,
+    $popsicle = #c6e2d2,
+    $red = #ff0000,
+    $sakura green = #4ca197,
+    $sakura gold = #bf7740,
+    $silver = #e8e9e8,
+    $space gray = #9a9a9a,
+    $white = #f2f2f2,
+    $zebra bw = #000000,
+    $zebra pink = #de76b6,
+	$blue = #AEE0F7,
+	$tan = #d1642e,
+	$midnight blue = #154c79  
+
+	' | split:','
+%}

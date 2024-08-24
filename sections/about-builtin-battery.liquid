@@ -1,0 +1,89 @@
+<section class="builtin-battery-section aboutus-builtin">
+  <div class="container">
+  <div class="inside-container">
+    {% if section.settings.battery_heading !='blank' %}
+      <h2 class="heading-type2 better_heading">{{ section.settings.battery_heading }}</h2>
+    {% endif %}  
+    <div class="image-text-container">
+      {%- for block in section.blocks -%}
+        <div class="builtin-box">
+          <div class="img-box">
+            <img src="{{ block.settings.bettryimage | img_url:'original' }}" alt="built in gan" class="img-fluid"/>
+          </div>
+          <p>{{ block.settings.betterycontent }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</section>
+<style>
+ .aboutus-builtin{
+   background-color: {{section.settings.aboutus-builtin}};
+ }
+ .better_heading{
+   color:{{section.setting.betterytitle_color}};
+ } 
+ .right_content{
+   color:{{section.settings.betterysubtitle_color}};
+ } 
+ 
+</style>
+{% schema %}
+  {
+    "name": "Built In battery Image",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section Background Style"
+      },
+      {
+        "type": "color",
+        "id": "aboutus-builtin",
+        "default": "#fff",
+        "label": "Section Background Color"
+      },
+      {
+        "type": "text",
+        "id": "battery_heading",
+        "label": "Heading"
+      },
+      {
+        "type": "color",
+        "id": "betterytitle_color",
+        "label": "Heading Color",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "betterysubtitle_color",
+        "label": "Sub Heading Color",
+        "default": "#000"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image-item",
+        "name": "Image item",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "bettryimage",
+            "label": "Image"
+          },
+          {
+            "type": "textarea",
+            "id": "betterycontent",
+            "label": "Content"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

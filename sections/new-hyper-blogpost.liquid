@@ -1,0 +1,220 @@
+<section class="new-hyper-section hyper-blog-post">
+  <div class="container">
+    <div class="inside-container">
+      <div class="hyper-top-text blog_header">
+        <h2 class="heading-type2 text-center">{{ section.settings.blogheading }}</h2>
+        <p class="text-center">{{ section.settings.blogsubheading | escape }}</p>
+      </div>
+      <div class="row">
+        {%- for article in section.settings.blog.articles limit: 3 -%}
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 new-hyper-mobile {% unless forloop.last == true %}mb-4 mb-lg-0{% endunless %}">
+            <div class="image-section">
+              <a href="{{ article.url }}"><img class="img-fluid" loading="lazy" src="{{ article.image.src | img_url }}" width: 420 alt="{{ article.title | escape }}" title="{{ article.title | escape }}"></a>
+              <a href="{{ article.url }}"><p class="text-center blogs_title">{{ article.title | escape }}</p></a>
+            </div>
+          </div>
+        {%- endfor -%}  
+      </div>
+      {%- if section.settings.show_view_all -%}
+        <div class="d-flex justify-content-center post-button">
+          {% if section.settings.blog_url != 'blank'%}
+            <a class="primary-btn common-btn more_blog" href="{{ section.settings.blog_url }}">{{section.settings.btn_title}}</a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+<style>
+  .hyper-blog-post{
+    background-color: {{section.settings.blog_bg}};
+  }
+  .hyper-blog-post .blog_header h2{
+    color: {{ section.settings.blog_heading }};
+    font-size: {{ section.settings.blog_size }}px;
+  }
+  .hyper-blog-post .blog_header p{
+    color: {{ section.settings.blogsub_heading }};
+    font-size: {{ section.settings.blogsub_size }}px;
+  }
+  .hyper-blog-post .more_blog{
+    background: {{section.settings.moreblog_bg}};
+    border: 2px solid {{section.settings.moreblog_border}};
+    color: {{section.settings.moreblog_color}};
+  }
+  .hyper-blog-post .more_blog:hover{
+    background: {{section.settings.hovermore_bg}};
+    border: 2px solid {{section.settings.hovermore_border}};
+    color: {{section.settings.hovermore_color}};
+  }
+  .hyper-blog-post .blogs_title{
+    color: {{section.settings.blog_title_color}};
+    font-size: {{section.settings.blog_title_size}}px;
+  }
+</style>
+{% schema %}
+  {
+    "name": "Hyper Blog Posts",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section Background Style"
+      },
+      {
+        "type": "color",
+        "id": "blog_bg",
+        "default": "#fff",
+        "label": "Section Background Color"
+      },
+      {
+        "type": "text",
+        "id": "blogheading",
+        "default": "What's New @ Hyper",
+        "label": "t:sections.featured-blog.settings.heading.label",
+    	"info" : "Please include Blogs Title here"
+      },
+      {
+        "type": "text",
+        "id": "blogsubheading",
+        "default": " Quisque nibh turpis, ultrices eu hendrerit commodo, imperdiet in sapien. Proin maximus lacinia sapien sed aliquam.",
+        "label": "Sub heading",
+    	"info" : "Please include Blogs subheading here"
+      },
+      {
+        "type": "blog",
+        "id": "blog",
+        "label": "t:sections.featured-blog.settings.blog.label",
+        "info" : "Please select Blogs here"
+      },
+      {
+		"type":"checkbox",
+		"label":"Enable View More post button",
+		"id":"show_view_all",
+		"default": true
+      },
+      {
+		"type":"text",
+        "label":"Button Title",
+        "id":"btn_title",
+        "default":"View More Posts",
+		"info" : "Please include Button Text here"
+      },
+      {
+        "type":"url",
+        "id":"blog_url",
+        "label":"Button URL",
+        "info" : "Please Add Button link here"
+      },
+      {
+        "type":"header",
+        "content":"Fonts Style"
+      },
+      {
+        "type": "color",
+        "id": "blog_heading",
+        "default": "#000",
+        "label": "Heading Color"
+      },
+      {
+        "type": "range",
+        "id": "blog_size",
+        "min": 25,
+        "max": 36,
+        "step": 1,
+        "unit": "px",
+        "label": "Heading Font Size",
+        "default": 32
+      },
+      {
+        "type": "color",
+        "id": "blogsub_heading",
+        "default": "#000",
+        "label": "Sub Heading Color"
+      },
+      {
+        "type": "range",
+        "id": "blogsub_size",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Subheading Font Size",
+        "default": 16
+      },
+      {
+        "type": "color",
+        "id": "blog_title_color",
+        "default": "#000",
+        "label": "Heading Color"
+      },
+      {
+        "type": "range",
+        "id": "blog_title_size",
+        "min": 20,
+        "max": 34,
+        "step": 1,
+        "unit": "px",
+        "label": "Blog Title Font Size",
+        "default": 24
+      },
+      {
+        "type": "header",
+        "content": "Button Style"
+      },
+      {
+        "type": "color",
+        "id": "moreblog_bg",
+        "default": "#3c3fbc",
+        "label": "Button Background Color"
+      },
+      {
+        "type": "color",
+        "id": "moreblog_color",
+        "default": "#fff",
+        "label": "Button Font Color"   
+      },
+      {
+        "type": "color",
+        "id": "moreblog_border",
+        "default": "#3c3fbc",
+        "label": "Button Border Color"
+      },
+      {
+        "type": "header",
+        "content": "Button Hover Style"
+      },
+      {
+        "type": "color",
+        "id": "hovermore_bg",
+        "default": "#000",
+        "label": "Button Background Color"
+      },
+      {
+        "type": "color",
+        "id": "hovermore_color",
+        "default": "#fff",
+        "label": "Button Font Color"   
+      },
+      {
+        "type": "color",
+        "id": "hovermore_border",
+        "default": "#000",
+        "label": "Button Border Color"
+      }
+    ],
+    "presets": [
+    {
+      "name": "Hyper Blog Posts",
+      "settings": {
+        "blog": "News"
+      }
+    }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

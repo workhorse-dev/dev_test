@@ -1,0 +1,1 @@
+{"sections":{"shogun-helper":{"type":"shogun-helper","settings":{}},"main":{"type":"main-page","custom_css":["p {margin-bottom: 10px;}"],"settings":{"padding_top":0,"padding_bottom":0,"show_heading":true}},"shogun-optimizer":{"type":"shogun-optimizer","settings":{}}},"order":["shogun-helper","main","shogun-optimizer"]}

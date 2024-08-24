@@ -1,0 +1,327 @@
+<div class="rows-and-columns container">
+  <div class="inside-container">
+  {% for block in section.blocks %}
+    {% case block.type %}
+    {% when 'row' %}  
+      <section class="row my-5" style="min-height: {{ block.settings.height }}vh; background: {{ block.settings.background_color }}; color: {{ block.settings.text_color }};">
+        <div class="content-container text-center">
+          {% if block.settings.featured_image %}
+            <img class="img-fluid lazyload mb-3" src="{{ block.settings.featured_image | img_url: '800x' }}">
+          {% endif %}
+          <h2 class="title main-heading" style="font-size: {{ block.settings.title_font_size }}px; line-height: {{ block.settings.title_font_size }}px; color: {{ block.settings.text_color }};">{{ block.settings.title }}</h2>
+          <p class="description sub-heading" style="font-size: {{ block.settings.description_font_size }}px; color: {{ block.settings.text_color }};">{{ block.settings.description }}</p>
+        </div>
+      </section>
+    {% when 'column' %}  
+      <section class="row">
+        <div class="col-12 col-md-6" style="{% if block.settings.featured_image %}background: url({{ block.settings.featured_image | img_url: '1000x' }}) center center no-repeat;{% else %}background-color: {{ block.settings.background_color }};{% endif %} min-height: {{ block.settings.height }}vh; color: {{ block.settings.text_color }};">
+          <div class="content-container p-2 p-md-3 p-lg-5">
+            <h2 class="title main-heading" style="font-size: {{ block.settings.title_font_size }}px; line-height: {{ block.settings.title_font_size }}px; color: {{ block.settings.text_color }};">{{ block.settings.title }}</h2>
+            <p class="description sub-heading" style="font-size: {{ block.settings.description_font_size }}px; color: {{ block.settings.text_color }};">{{ block.settings.description }}</p>
+            {% if block.settings.cta_text != blank %}
+                <a href="{{ block.settings.cta_url }}"><button class="cta-primary primary-btn common-btn"  style="background: {{ block.settings.cta_color_button }}; color: {{ block.settings.cta_color_text }};">{{ block.settings.cta_text }}</button></a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-12 col-md-6" style="{% if block.settings.featured_image2 %}background: url({{ block.settings.featured_image2 | img_url: '1000x' }}) center center no-repeat;{% else %}background-color: {{ block.settings.background_color2 }};{% endif %} min-height: {{ block.settings.height2 }}vh; color: {{ block.settings.text_color2 }};">
+          <div class="content-container p-2 p-md-3 p-lg-5">
+            <h2 class="title" style="font-size: {{ block.settings.title_font_size2 }}px; line-height: {{ block.settings.title_font_size2 }}px; color: {{ block.settings.text_color2 }};">{{ block.settings.title2 }}</h2>
+            <p class="description" style="font-size: {{ block.settings.description_font_size2 }}px; color: {{ block.settings.text_color2 }};">{{ block.settings.description2 }}</p>
+            {% if block.settings.cta_text2 != blank %}
+                <a href="{{ block.settings.cta_url2 }}"><button class="cta-primary" style="background: {{ block.settings.cta_color_button2 }}; color: {{ block.settings.cta_color_text2 }};">{{ block.settings.cta_text2 }}</button></a>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+    {% endcase %}
+  {% endfor %} 
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Rows and Columns",
+    "settings": [
+      
+    ],
+    "blocks":[
+     {
+        "name": "Row",
+        "type": "row",
+        "settings": [
+          {
+            "type": "header",
+            "content": "General"
+          },
+          {
+            "type": "range",
+            "id": "height",
+            "label": "Section Height",
+            "info": "This is the height of the section by percentage of screen size. Default is 50%.",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "default": 50
+          },
+          {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color",
+            "default": "#FFFFFF"
+          },
+          {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text Color",
+            "default": "#000000"
+          },
+          {
+            "type": "header",
+            "content": "Row Content"
+          },
+          {
+            "type": "image_picker",
+            "id": "featured_image",
+            "label": "Featured Image",
+            "info": "JPG files recommended"
+          },
+          {
+            "type": "range",
+            "id": "featured_image_width",
+            "label": "Image Width (in pixels)",
+            "min": 0,
+            "max": 800,
+            "step": 10,
+            "default": 400
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Header Text",
+            "default": "Lorem Ipsum Header"
+          },
+          {
+            "type": "range",
+            "id": "title_font_size",
+            "label": "Header Text Font Size",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 70,
+            "info": "Size is in pixels. Default is 70px."
+          },
+          {
+            "type": "textarea",
+            "id": "description",
+            "label": "Description"
+          },
+          {
+            "type": "range",
+            "id": "description_font_size",
+            "label": "Description Text Font Size",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 20,
+            "info": "Size is in pixels. Default is 20px."
+          }
+       ]
+     },
+     {
+        "name": "Column",
+        "type": "column",
+        "settings": [
+          {
+            "type": "header",
+            "content": "General 1"
+          },
+          {
+            "type": "range",
+            "id": "height",
+            "label": "Section Height",
+            "info": "This is the height of the section by percentage of screen size. Default is 50%.",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "default": 50
+          },
+          {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color",
+            "default": "#FFFFFF"
+          },
+          {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text Color",
+            "default": "#000000"
+          },
+          {
+            "type": "image_picker",
+            "id": "featured_image",
+            "label": "Featured Image",
+            "info": "JPG files recommended"
+          },
+          {
+            "type": "header",
+            "content": "Column Content"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Header Text",
+            "default": "Lorem Ipsum Header"
+          },
+          {
+            "type": "range",
+            "id": "title_font_size",
+            "label": "Header Text Font Size",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 70,
+            "info": "Size is in pixels. Default is 70px."
+          },
+          {
+            "type": "textarea",
+            "id": "description",
+            "label": "Description"
+          },
+          {
+            "type": "range",
+            "id": "description_font_size",
+            "label": "Description Text Font Size",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 20,
+            "info": "Size is in pixels. Default is 20px."
+          },
+          {
+            "type": "header",
+            "content": "Call to Action (CTA)"
+          },
+          {
+            "type": "color",
+            "id": "cta_color_button",
+            "label": "CTA Button Color",
+            "default": "#ededed"
+          },
+          {
+            "type": "color",
+            "id": "cta_color_text",
+            "label": "CTA Text Color",
+            "default": "#000000"
+          },
+          {
+            "type": "text",
+            "id": "cta_text",
+            "label": "Button Text",
+            "info": "CTA Button is optional. If this field is left empty, no CTA will appear."
+          },
+          {
+            "type": "url",
+            "id": "cta_url",
+            "label": "Button URL"
+          },
+          {
+            "type": "header",
+            "content": "Column Content 2"
+          },
+          {
+            "type": "range",
+            "id": "height2",
+            "label": "Section Height",
+            "info": "This is the height of the section by percentage of screen size. Default is 50%.",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "default": 50
+          },
+          {
+            "type": "color",
+            "id": "background_color2",
+            "label": "Background Color",
+            "default": "#FFFFFF"
+          },
+          {
+            "type": "color",
+            "id": "text_color2",
+            "label": "Text Color",
+            "default": "#000000"
+          },
+          {
+            "type": "image_picker",
+            "id": "featured_image2",
+            "label": "Featured Image",
+            "info": "JPG files recommended"
+          },
+          {
+            "type": "text",
+            "id": "title2",
+            "label": "Header Text",
+            "default": "Lorem Ipsum Header"
+          },
+          {
+            "type": "range",
+            "id": "title_font_size2",
+            "label": "Header Text Font Size",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 70,
+            "info": "Size is in pixels. Default is 70px."
+          },
+          {
+            "type": "textarea",
+            "id": "description2",
+            "label": "Description"
+          },
+          {
+            "type": "range",
+            "id": "description_font_size2",
+            "label": "Description Text Font Size",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 20,
+            "info": "Size is in pixels. Default is 20px."
+          },
+          {
+            "type": "header",
+            "content": "Call to Action (CTA)"
+          },
+          {
+            "type": "color",
+            "id": "cta_color_button2",
+            "label": "CTA Button Color",
+            "default": "#ededed"
+          },
+          {
+            "type": "color",
+            "id": "cta_color_text2",
+            "label": "CTA Text Color",
+            "default": "#000000"
+          },
+          {
+            "type": "text",
+            "id": "cta_text2",
+            "label": "Button Text",
+            "info": "CTA Button is optional. If this field is left empty, no CTA will appear."
+          },
+          {
+            "type": "url",
+            "id": "cta_url2",
+            "label": "Button URL"
+          }
+        ]
+     }       
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

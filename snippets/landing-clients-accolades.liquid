@@ -1,0 +1,46 @@
+{% comment %}
+  title: section.settings.title,
+  title_color: section.settings.title_color,
+  blocks: section.blocks
+{% endcomment %}
+
+
+  {% if title_color != blank %}
+    <style>
+      .section__{{section_id}} h2 {
+        color: {{ title_color }};
+      }
+    </style>
+  {% endif %}
+
+<section class="values-proposition landing-section section__{{section_id}}">
+
+  {% if title != blank %}
+    <h2 class="image-block__heading">{{ title | newline_to_br }}</h2>
+  {% endif %}
+
+  <div class="images-with-content">
+
+    {% for block in blocks %}
+
+      <div class="image-with-content">
+
+        {% assign image = block.settings.image %}
+        {% if image %}
+            {% if block.settings.url != blank %}
+            <a href="{{ block.settings.url }}" target="_blank">
+              {% endif %}
+            <img src="{{ image | img_url: '700x' }}"{% if image.alt != blank %} alt="{{ image.alt }}"{% endif %}>
+              {% if block.settings.url != blank %}
+            </a>
+            {% endif %}
+        {% endif %}
+
+
+
+      </div>
+
+    {% endfor %}
+  </div>
+
+</section>

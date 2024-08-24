@@ -1,0 +1,232 @@
+<section class="thunderbolt-landing-section" id="{{ section.id }}">
+  <div class="thunderbolt-landing-desktop">
+    <div class="landing-img">
+      <img src="{{section.settings.desktop_image | img_url:'master'}}" alt="landing desktop img" class="img-fluid" loading="lazy"/>
+      <div class="landing-content desktop_style">
+        {% unless section.settings.headingtext == blank %}<h2 class="main-heading">{{ section.settings.headingtext }}</h2>{% endunless %}
+        {% unless section.settings.subheading == blank %}<p>{{ section.settings.subheading }}</p>{% endunless%}
+        <div class="landing-btn">
+          {% unless section.settings.link == blank %}<a class="primary-btn common-btn" href="{{section.settings.link}}">{{ section.settings.button_label }}</a>{% endunless %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="thunderbolt-landing-mobile">
+    <div class="landing-mobile-img">
+      <img src="{{section.settings.mobile_image | img_url:'original'}}" alt="landing mobile" class="img-fluid" loading="lazy"/>
+      <div class="landing-content mobile_style">
+        <div class="container">
+          {% unless section.settings.headingtext == blank %}<h2 class="main-heading text-center">{{ section.settings.headingtext }}</h2>{% endunless %}
+          {% unless section.settings.subheading == blank %}<p class="text-center">{{ section.settings.subheading }}</p>{% endunless%}
+          <div class="landing-btn d-flex justify-content-center">
+            {% unless section.settings.link == blank %}<a class="primary-btn common-btn" href="{{section.settings.link}}">{{ section.settings.button_label }}</a>{% endunless %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+ .thunderbolt-landing-section{
+   background-color: {{section.settings.thunderbolt_bg}};
+ }
+  #{{ section.id }} .landing-content .common-btn{
+    background: {{section.settings.th_btn_bg}};
+    border: 2px solid {{section.settings.thbtn_border}};
+    color: {{section.settings.thbtn_txt_color}};
+  }
+  #{{ section.id }} .landing-content .common-btn:hover{
+    background: {{section.settings.hoverthun_bg}};
+    border: 2px solid {{section.settings.hoverthun_border}};
+    color: {{section.settings.hoverthun_color}};
+  }
+  #{{ section.id }} .desktop_style h2{
+    color:  {{section.settings.thundesk_heading}};
+    font-size:  {{section.settings.thundesk_headingsize}}px;
+  }
+  #{{ section.id }} .desktop_style p{
+    color: {{section.settings.thundesk_subheading}};
+    font-size:  {{section.settings.thundesk_subheadingsize}}px;
+  }
+  @media screen and (max-width: 575px) {
+    #{{ section.id }} .mobile_style h2{
+      font-size:  {{section.settings.thunmob_headingsize}}px;
+    }
+    #{{ section.id }} .mobile_style p{
+      font-size:  {{section.settings.thunmob_subheadingsize}}px;
+    }
+  }
+</style>
+{% schema %}
+  {
+    "name": "Image With Text Left",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section Background Style"
+      },
+      {
+        "type": "color",
+        "id": "thunderbolt_bg",
+        "default": "#fff",
+        "label": "Section Background Color"
+      },
+      {
+        "type": "header",
+        "content": "Desktop Font Style"
+      },
+      {
+      "type": "color",
+      "id": "thundesk_heading",
+      "default": "#000",
+      "label": "Heading Color"
+    },
+    {
+      "type": "range",
+      "id": "thundesk_headingsize",
+      "min": 30,
+      "max": 46,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Font Size",
+      "default": 42
+    },
+    {
+      "type": "color",
+      "id": "thundesk_subheading",
+      "default": "#000",
+      "label": "Sub Heading Color"
+    },
+    {
+        "type": "range",
+        "id": "thundesk_subheadingsize",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Subheading Font Size",
+        "default": 18
+      },
+      {
+        "type": "header",
+        "content": "Mobile Font Style"
+      },
+      {
+        "type": "range",
+        "id": "thunmob_headingsize",
+        "min": 25,
+        "max": 45,
+        "step": 1,
+        "unit": "px",
+        "label": "Heading Font Size for mobile",
+        "default": 42
+      },
+      {
+        "type": "range",
+        "id": "thunmob_subheadingsize",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Subheading Font Size for mobile",
+        "default": 20
+      },
+      {
+        "type": "header",
+        "content": "Button Style"
+      },
+      {
+        "type": "color",
+        "id": "th_btn_bg",
+        "default": "#3c3fbc",
+        "label": "Button Background Color"
+      },
+      {
+        "type": "color",
+        "id": "thbtn_txt_color",
+        "default": "#fff",
+        "label": "Button Font Color"   
+      },
+      {
+        "type": "color",
+        "id": "thbtn_border",
+        "default": "#3c3fbc",
+        "label": "Button Border Color"
+     },
+      {
+      "type": "header",
+      "content": "Button Hover Style"
+	},
+	{
+      "type": "color",
+      "id": "hoverthun_bg",
+      "default": "#000",
+      "label": "Button Background Color"
+	},
+	{
+      "type": "color",
+      "id": "hoverthun_color",
+      "default": "#fff",
+      "label": "Button Font Color"   
+	},
+    {
+      "type": "color",
+      "id": "hoverthun_border",
+      "default": "#000",
+      "label": "Button Border Color"
+    },
+      
+      {
+        "type": "header",
+        "content": "Image Banner"
+      },
+      {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop Banner Image"
+      },
+      {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Banner Image"
+      },
+      {
+          "type": "text",
+          "id": "headingtext",
+          "label": "t:sections.slideshow.blocks.slide.settings.heading.label",
+		  "info" : "Please include heading here",
+          "default":"Thunderbolt Docks: 9 Things to Know Before You Buy"
+      },        
+      {
+          "type": "textarea",
+          "id": "subheading",
+          "default": "Dive deep into Thunderbolt and explore its capabilities, benefits, and how you can take full advantage of this blazing-fast technology.",
+          "label": "t:sections.slideshow.blocks.slide.settings.subheading.label",
+          "info" : "Please include subheading here"
+      },
+      {
+          "type": "text",
+          "id": "button_label",
+          "default": "Button label",
+          "label": "t:sections.slideshow.blocks.slide.settings.button_label.label",
+          "info": "t:sections.slideshow.blocks.slide.settings.button_label.info"
+      },
+      {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.slideshow.blocks.slide.settings.link.label"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image With Text Left"
+      }
+    ]   
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

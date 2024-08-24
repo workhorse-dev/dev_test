@@ -1,0 +1,345 @@
+<script
+  type="application/json"
+  data-section-id="{{ section.id }}"
+  data-section-type="dynamic-image-with-text-and-form"
+>
+</script>
+
+{%
+  include 'image-with-text-and-form',
+  image: section.settings.image,
+  mobile_image: section.settings.mobile_image,
+  show_overlay: section.settings.show_overlay,
+  title: section.settings.title,
+  title_color: section.settings.title_color,
+  subheading: section.settings.subheading,
+  subheading_color: section.settings.subheading_color,
+  section_id: 'dynamic-image-with-text-and-form',
+  paragraph_1: section.settings.paragraph_1,
+  title_paragraph_2: section.settings.title_paragraph_2,
+  paragraph_2: section.settings.paragraph_2,
+  form_title: section.settings.form_title,
+  form_script: section.settings.form_script,
+  blocks: section.blocks
+%}
+
+{% schema %}
+{
+  "name": "Image with text and form",
+  "class": "section-image-with-text-and-form",
+  "settings": [
+    {
+      "id": "image",
+      "type": "image_picker",
+      "label": "Image",
+      "info": "1920 x 1200px recommended"
+    },
+    {
+      "id": "mobile_image",
+      "type": "image_picker",
+      "label": "Mobile image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show overlay",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+  	{
+      "type": "color",
+      "id": "title_color",
+      "label": "Heading Color",
+	    "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+  	{
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+	    "default": "#ffffff"
+    },
+    {
+      "type": "richtext",
+      "id": "paragraph_1",
+      "label": "Paragraph 1"
+    },
+    {
+      "type": "color",
+      "id": "content_color",
+      "label": "Subheading Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "richtext",
+      "id": "title_paragraph_2",
+      "label": "Title Paragraph 2"
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_2",
+      "label": "Paragraph 2"
+    },
+    {
+      "type": "header",
+      "content": "Form"
+    },
+    {
+      "type": "textarea",
+      "id": "form_title",
+      "label": "Form title"
+    },
+    {
+      "type": "textarea",
+      "id": "form_script",
+      "label": "Form script",
+      "info": "In case Mailchimp, Klaviyo or other service is used, otherwise use the following area to add form fields"
+    },
+    {
+      "type": "header",
+      "content": "Form fields:"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text-field",
+      "name": "Text field",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Is required",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "width_percent",
+          "label": "Width percent",
+          "options": [
+            {
+              "value": "50",
+              "label": "50%"
+            },
+            {
+              "value": "100",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label"
+        }
+      ]
+    },
+    {
+      "type": "number-field",
+      "name": "Number",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Is required",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "width_percent",
+          "label": "Width percent",
+          "options": [
+            {
+              "value": "50",
+              "label": "50%"
+            },
+            {
+              "value": "100",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label"
+        }
+      ]
+    },
+    {
+      "type": "email",
+      "name": "Email",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Is required",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "width_percent",
+          "label": "Width percent",
+          "options": [
+            {
+              "value": "50",
+              "label": "50%"
+            },
+            {
+              "value": "100",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label"
+        }
+      ]
+    },
+    {
+      "type": "url",
+      "name": "URL",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Is required",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "width_percent",
+          "label": "Width percent",
+          "options": [
+            {
+              "value": "50",
+              "label": "50%"
+            },
+            {
+              "value": "100",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label"
+        }
+      ]
+    },
+    {
+      "type": "phone-number",
+      "name": "Phone number",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Is required",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "width_percent",
+          "label": "Width percent",
+          "options": [
+            {
+              "value": "50",
+              "label": "50%"
+            },
+            {
+              "value": "100",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label"
+        }
+      ]
+    },
+    {
+      "type": "dropdown-option-select",
+      "name": "Dropdown / Option Select",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Is required",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "width_percent",
+          "label": "Width percent",
+          "options": [
+            {
+              "value": "50",
+              "label": "50%"
+            },
+            {
+              "value": "100",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "id": "select_values",
+          "label": "Select values"
+        }
+      ]
+    },
+    {
+      "type": "textarea",
+      "name": "Textarea",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Is required",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "width_percent",
+          "label": "Width percent",
+          "options": [
+            {
+              "value": "50",
+              "label": "50%"
+            },
+            {
+              "value": "100",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label"
+        }
+      ]
+    }
+
+  ]
+}
+
+{% endschema %}

@@ -1,0 +1,59 @@
+<script
+  type="application/json"
+  data-section-id="{{ section.id }}"
+  data-section-type="landing-testimonials"
+>
+</script>
+
+{%
+  include 'landing-testimonials',
+  section_id: section.id,
+  title: section.settings.title,
+  title_color: section.settings.title_color,
+  blocks: section.blocks
+%}
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "class": "section-landing-testimonials",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Heading Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

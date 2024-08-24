@@ -1,0 +1,264 @@
+<section class="trending-section" id="{{ section.id }}">
+  <div class="container">
+    <div class="inside-container">
+      <h6 class="section_heading">{{section.settings.title}}</h6>
+      <div class="owl-carousel trending-carousel">
+        {%- for block in section.blocks -%}
+          <div class="item">
+            <div class="trending-product-container">
+              {%- assign product = block.settings.product -%}
+              <div class="image-text-box">
+                {% if product.compare_at_price > product.price and product.available %}
+                  <h5 class="mb-2">{{- 'products.product.on_sale' | t -}}</h5>
+                {% else %}  
+                  <h5 class="mb-2 invisible">New</h5>
+                {% endif %}
+                <a href="{{ product.url }}">
+                  <img src="{{ product.featured_media | img_url: 'original' }}" loading="lazy" alt="thunderbolt image"/ loading="lazy">
+                </a>
+                {% comment %}
+                <div data-bv-show="inline_rating" data-bv-product-id="{{product.id}}" data-bv-redirect-url="{{ product.url }}" data-bv-seo="false"></div>
+                {% endcomment %}
+                <div class="trending-content">
+                  <p class="pro_title d-none">{{ product.vendor | escape }}</p>
+                  <span class="pro_description description my-2 d-block">{{ product.title }}</span>
+                  <div class="price">
+                    {% if product.compare_at_price > product.price %}
+                      <span class="strikethrough me-1"> {{ product.compare_at_price | money }}</span>
+                    {% endif %}
+                    <span class="font-weight-bold me-1">{{product.price | money}} 
+                    {% if block.settings.discount_percentage  %}
+                      {% assign percentage = 0 %} 
+                      {% for variant in product.variants %}
+                        {% assign saving = variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price | round %}
+                        {% assign percentage = saving | at_least: percentage %}
+                      {% endfor %}  
+                      <strong class="percentage"> ${{ percentage }} OFF</strong>
+                    {% endif %}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              {% if block.settings.show_atc %}
+                <input type="hidden" name="id" id="variant_id" data-productid="{{ product.id }}"  value="{{ product.selected_or_first_available_variant.id }}" />
+                <input min="1" type="number" id="quantity" name="quantity" value="1" style="display:none;"/>  
+                <a href="javascript:void(0)" class="btn_style add_button product-form__cart-submit" data-quantity="1" data-productid="{{ product.selected_or_first_available_variant.id }}" onclick="add_Item({{product.selected_or_first_available_variant.id}},1);">Add to Cart</a>
+              {% endif %} 
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  
+</section>
+<style>
+  #{{ section.id }}.trending-section{
+    background-color: {{section.settings.trending_bg}};
+  }
+  #{{ section.id }} .section_heading{
+    font-size: {{section.settings.treheading_size}}px;
+    color: {{section.settings.treheading_color}};
+  }
+  #{{ section.id }} .btn_style{
+    background: {{section.settings.trebtn_bg}};
+    border: 2px solid {{section.settings.trebtn_border}};
+    color: {{section.settings.trebutton_color}};
+  }
+   #{{ section.id }} .trending-product-container:hover a.btn_style{
+    background: {{section.settings.trehoverbtn_bg}};
+    border: 2px solid {{section.settings.trehoverbtn_border}};
+    color: {{section.settings.trehovertxt_color}};
+  }
+  #{{ section.id }} .pro_title{
+    color: {{section.settings.tretitle_color}};
+    font-size: {{section.settings.tretitle_size}}px;
+  }
+  #{{ section.id }} .pro_description{
+    color: {{section.settings.trepro_desc}};
+    font-size: {{section.settings.trepro_descsize}}px;
+  }
+  #{{ section.id }} .trending-product-container{
+    background: {{ section.settings.image_bg }};
+  }
+  
+</style>
+  
+<script>
+  function add_Item(productId,qty) {
+     CartJS.addItem( productId, qty, {}, {
+       "success": function(data, textStatus, jqXHR) { 
+         //               window.location.href = '/cart';
+         updateCartDrawer();
+         openCartDrawer();
+       },
+       "error": function(jqXHR, textStatus, errorThrown) {
+         console.log('error', errorThrown);
+       }
+     });
+  }
+</script>
+  
+{% schema %}
+  {
+    "name": "Trending Products",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Trending Now",
+    	"info" : "Please include section heading here"
+      },
+      {
+        "type": "header",
+        "content": "Section Style"
+      },
+      {
+		"type":"color",
+		"id":"trending_bg",
+		"label":"Section Background Color",
+		"default":"#fff"
+	  },
+      {
+		"type":"color",
+		"id":"treheading_color",
+		"label":"Heading Color",
+		"default":"#000"
+	  },
+      {
+        "type": "range",
+        "id": "treheading_size",
+        "min": 20,
+        "max": 34,
+        "step": 1,
+        "unit": "px",
+        "label": "Heading Font Size",
+        "default": 24
+      },
+      {
+		"type":"color",
+		"id":"tretitle_color",
+		"label":"Product Title Color",
+		"default":"#000"
+	  },
+      {
+        "type": "range",
+        "id": "tretitle_size",
+        "min": 15,
+        "max": 25,
+        "step": 1,
+        "unit": "px",
+        "label": "Title Font Size",
+        "default": 16
+      },
+      {
+		"type":"color",
+		"id":"trepro_desc",
+		"label":"Product Description Color",
+		"default":"#000"
+	  },
+      {
+        "type": "range",
+        "id": "trepro_descsize",
+        "min": 15,
+        "max": 25,
+        "step": 1,
+        "unit": "px",
+        "label": "Description Font Size",
+        "default": 16
+      },
+      {
+          "type": "color",
+          "id": "trebtn_bg",
+          "default": "#bbbcbf",
+          "label": "Button Background Color"
+      },
+      {
+          "type": "color",
+          "id": "trebutton_color",
+          "default": "#fff",
+          "label": "Button Font Color"
+      },
+      {
+      "type": "color",
+      "id": "trebtn_border",
+      "default": "#bbbcbf",
+      "label": "Button Border Color"
+    },
+    {
+      "type": "header",
+      "content": "Button Hover Style"
+	},
+	{
+      "type": "color",
+      "id": "trehoverbtn_bg",
+      "default": "#3c3fbc",
+      "label": "Button Background Color"
+	},
+	{
+      "type": "color",
+      "id": "trehovertxt_color",
+      "default": "#fff",
+      "label": "Button Font Color"   
+	},
+    {
+      "type": "color",
+      "id": "trehoverbtn_border",
+      "default": "#3c3fbc",
+      "label": "Button Border Color"
+    },
+    {
+      "type":"color",
+      "id":"image_bg",
+      "label":"Image Box Background",
+      "default":"#f8f8f8"
+    }
+    ],
+    "blocks": [
+      {
+        "type": "product",
+        "name": "product",
+        "limit": 7,
+        "settings": [
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Select Product"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_atc",
+            "default": true,
+            "label": "Show Add to cart button?"
+          },
+          {
+            "type":"checkbox",
+            "id":"discount_percentage",
+            "label":"Discount Off Price Show in Percentage",
+            "default": true             
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Trending Products",
+        "blocks": [
+          {
+            "type": "product"
+          },
+          {
+            "type": "product"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

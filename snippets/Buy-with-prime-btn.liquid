@@ -1,0 +1,42 @@
+<div class="prime-button">
+  <!-- Beginning of Buy With Prime Widget -->
+<style>
+    .bwp-widget-and-separator-container {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    .or-separator {
+        text-align: center;
+        display: none;
+    }
+   .bwp-widget-loaded ~ .or-separator {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin-top:6px;
+    }
+   .bwp-widget-loaded ~ .or-separator::before {
+      margin-right:.5em;
+    }
+   .bwp-widget-loaded ~ .or-separator::after {
+      margin-left:.5em;
+   }
+   .bwp-widget-loaded ~ .or-separator::after, .bwp-widget-loaded ~ .or-separator::before {
+      content: "";
+      border-bottom: 1px solid black;
+      flex: 1;
+   }
+</style>
+<div class="bwp-widget-and-separator-container">
+
+  
+  <script defer src='https://code.buywithprime.amazon.com/default.variant.selector.shopify.js'></script>
+  <script async fetchpriority='high' src='https://code.buywithprime.amazon.com/bwp.v1.js'></script>
+  {% if product.sku %}
+    <div id="amzn-buy-now" data-site-id="gdie9a998l" data-widget-id="w-6jK266WnVt97i7RWtzsZb6" data-sku="{{product.sku}}"></div>
+  {% else %}
+    <div id="amzn-buy-now" data-site-id="gdie9a998l" data-widget-id="w-6jK266WnVt97i7RWtzsZb6" data-sku="{{product.selected_or_first_available_variant.sku}}"></div>
+  {% endif %}
+  <!-- End of Buy With Prime Widget -->
+<span class="or-separator">OR</span>
+</div>

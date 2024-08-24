@@ -1,0 +1,249 @@
+<section class="new-hyper-section new-hyper-section-slider">
+  <div class="container">
+    <div class="hyper-top-text new-hyper-slider">
+      <h2 class="heading-type2 text-center">{{ section.settings.heading }}</h2>
+      <p class="text-center">{{ section.settings.subheading | escape }}</p>
+    </div>
+    {% for block in section.blocks limit: section.blocks.size %}
+      <input type="radio" name="slider" id="item-{{forloop.index }}" {% if forloop.index == 1 %}checked{% endif %}/>
+    {% endfor %}  
+    <div class="cards">
+     {% for block in section.blocks limit: section.blocks.size %}
+       <label class="card" for="item-{{forloop.index }}" id="song-{{forloop.index }}">
+          <span><a href="{{ block.settings.blog_url }}"><img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}" loading="lazy" /></a></span>
+          <p class="section_title">{{ block.settings.title }}</p>
+        </label>
+     {% endfor %} 
+    </div>
+
+    {%- if section.settings.view_btnurl -%}
+    <div class="player">
+      <div class="d-flex justify-content-center more-post-btn">
+        {% if section.settings.view_btnurl != 'blank'%}
+          <a class="primary-btn common-btn view-more" href="{{ section.settings.view_btnurl }}">{{ section.settings.btn_title }}</a>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+    <div class="hyper-slider-icons">
+      <img src="{{ 'owl-left.png' | asset_url }}" onclick="prev()" class="prev-icon" alt="left arrow"/>
+      <img src="{{ 'owl-right.png' | asset_url }}" class="next-icon" onclick="next()" alt="left arrow"/>
+    </div>
+  </div>
+</section>
+<style>
+  .new-hyper-section-slider{
+    background-color: {{section.settings.slider_bg}};
+  }
+  .new-hyper-slider h2{
+    color: {{ section.settings.slider_heading }};
+    font-size: {{ section.settings.slider_size }}px;
+  }
+  .new-hyper-slider p{
+    color: {{ section.settings.slidersub_heading }};
+    font-size: {{ section.settings.slidersub_size }}px;
+  }
+  .new-hyper-section-slider .view-more{
+    background: {{section.settings.view_bg}};
+    border: 2px solid {{section.settings.view_border}};
+    color: {{section.settings.viewtxt_color}};
+  }
+  .new-hyper-section-slider .view-more:hover{
+    background: {{section.settings.hoverview_bg}};
+    border: 2px solid {{section.settings.hoverview_border}};
+    color: {{section.settings.hoverview_color}};
+  }
+  .new-hyper-section-slider .section_title{
+    color: {{section.settings.title_heading}};
+    font-size: {{section.settings.title_size}}px;
+  }
+</style>
+{% schema %}
+  {
+    "name": "Hyper New Features",
+    "max_blocks": 3,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section Background Style"
+      },
+      {
+        "type": "color",
+        "id": "slider_bg",
+        "default": "#f8f8f8",
+        "label": "Section Background Color"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "default": "What's New @ Hyper",
+        "label": "t:sections.featured-blog.settings.heading.label",
+    	"info" : "Please include Blogs Title here"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "default": "Quisque nibh turpis, ultrices eu hendrerit commodo, imperdiet in sapien. Proin maximus lacinia sapien sed aliquam.",
+        "label": "Sub heading",
+    	"info" : "Please include Blogs subheading here"
+      },
+      {
+		"type":"checkbox",
+		"label":"Enable View More post button",
+		"id":"show_view_all",
+		"default": true
+      },
+      {
+		"type":"text",
+        "label":"Button Title",
+        "id":"btn_title",
+		"info" : "Please include Button Text here"
+      },
+      {
+		"type":"url",
+		"id":"view_btnurl",
+		"label":"Button URL",
+		"info" : "Please Add Button link here"
+      },
+      {
+        "type":"header",
+        "content":"Fonts Style"
+      },
+      {
+        "type": "color",
+        "id": "slider_heading",
+        "default": "#000",
+        "label": "Heading Color"
+      },
+      {
+        "type": "range",
+        "id": "slider_size",
+        "min": 25,
+        "max": 36,
+        "step": 1,
+        "unit": "px",
+        "label": "Heading Font Size",
+        "default": 32
+      },
+      {
+        "type": "color",
+        "id": "slidersub_heading",
+        "default": "#000",
+        "label": "Sub Heading Color"
+      },
+      {
+        "type": "range",
+        "id": "slidersub_size",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Subheading Font Size",
+        "default": 16
+      },
+      {
+        "type": "color",
+        "id": "title_heading",
+        "default": "#000",
+        "label": "Heading Color"
+      },
+      {
+        "type": "range",
+        "id": "title_size",
+        "min": 20,
+        "max": 34,
+        "step": 1,
+        "unit": "px",
+        "label": "Heading Font Size",
+        "default": 24
+      },
+      {
+        "type": "header",
+        "content": "Button Style"
+      },
+      {
+        "type": "color",
+        "id": "view_bg",
+        "default": "#3c3fbc",
+        "label": "Button Background Color"
+      },
+      {
+        "type": "color",
+        "id": "viewtxt_color",
+        "default": "#fff",
+        "label": "Button Font Color"   
+      },
+      {
+        "type": "color",
+        "id": "view_border",
+        "default": "#3c3fbc",
+        "label": "Button Border Color"
+      },
+      {
+        "type": "header",
+        "content": "Button Hover Style"
+      },
+      {
+        "type": "color",
+        "id": "hoverview_bg",
+        "default": "#000",
+        "label": "Button Background Color"
+      },
+      {
+        "type": "color",
+        "id": "hoverview_color",
+        "default": "#fff",
+        "label": "Button Font Color"   
+      },
+      {
+        "type": "color",
+        "id": "hoverview_border",
+        "default": "#000",
+        "label": "Button Border Color"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "slide",
+        "name": "Image Slide",
+        "settings": [
+          {
+            "label": "Carasoul; Image",
+            "id": "image",
+            "type": "image_picker"
+          },
+          {
+            "type":"text",
+            "label":"Post Text",
+            "id":"title",
+            "default":"HYPER Announces Immediate Availability for HyperDrive DUO PRO"
+          },
+          {
+            "type":"url",
+            "id":"blog_url",
+            "label":"Image URL"
+          }
+        ]
+      }
+    ],
+    "presets": [
+    {
+      "name": "Hyper New Posts",
+      "blocks": [
+        {
+          "type": "slide"
+        },
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

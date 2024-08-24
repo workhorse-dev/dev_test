@@ -1,0 +1,149 @@
+{% if product.metafields.custom.features_tab != blank or product.metafields.custom.product_specifications_tab != blank or product.metafields.custom.product_what_in_box_tab != blank or  product.metafields.custom.product_support_tab != blank %}
+<section class="feature-tab-section">
+  <div class="container">
+    <div class="inside-container feature-tab-container">
+      <div class="feature-tab-desktop">
+        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+          {% if product.metafields.custom.features_tab != blank %}
+            <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active heading-type3"
+              id="pills-features-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-features"
+              type="button"
+              role="tab"
+              aria-controls="pills-features"
+              aria-selected="true"
+            >
+              Features
+            </button>
+          </li>
+          {% endif %}
+          {% if product.metafields.custom.product_specifications_tab != blank %}
+            <li class="nav-item" role="presentation">
+            <button
+              class="nav-link heading-type3"
+              id="pills-specifications-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-specifications"
+              type="button"
+              role="tab"
+              aria-controls="pills-specifications"
+              aria-selected="false"
+            >
+              Specifications
+            </button>
+          </li>
+          {% endif %}
+          {% if product.metafields.custom.product_what_in_box_tab != blank %}
+            <li class="nav-item" role="presentation">
+            <button
+              class="nav-link heading-type3"
+              id="pills-new-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-new"
+              type="button"
+              role="tab"
+              aria-controls="pills-new"
+              aria-selected="false"
+            >What's in the Box?
+            </button>
+          </li>
+          {% endif %}  
+          {% if product.metafields.custom.product_support_tab != blank %}
+            <li class="nav-item" role="presentation">
+            <button
+              class="nav-link heading-type3"
+              id="pills-support-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-support"
+              type="button"
+              role="tab"
+              aria-controls="pills-support"
+              aria-selected="false"
+            >
+              Support
+            </button>
+          </li>
+          {% endif %}
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-features" role="tabpanel" aria-labelledby="pills-features-tab">
+            {{ product.metafields.custom.features_tab }}
+          </div>
+          <div class="tab-pane fade" id="pills-specifications" role="tabpanel"aria-labelledby="pills-specifications-tab">
+            {{ product.metafields.custom.product_specifications_tab }}
+          </div>
+          <div class="tab-pane fade" id="pills-new" role="tabpanel" aria-labelledby="pills-new-tab">
+            {{ product.metafields.custom.product_what_in_box_tab }}
+          </div>
+          <div class="tab-pane fade" id="pills-support" role="tabpanel" aria-labelledby="pills-support-tab">
+            {{ product.metafields.custom.product_support_tab }}
+          </div>
+        </div>
+      </div>
+      <div class="feature-tab-mobile faq-section">
+        <div class="accordion" id="accordionExample2">
+          {% if product.metafields.custom.features_tab != blank %}
+          <div class="accordion-item selected-accordion" onclick="featureTabClicked(this)">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#Features" aria-expanded="true" aria-controls="Features">
+                Features
+              </button>
+            </h2>
+            <div id="Features" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample2">
+              <div class="accordion-body">
+                 {{ product.metafields.custom.features_tab }}     
+              </div>
+            </div>
+          </div>
+          {% endif %} 
+          {% if product.metafields.custom.product_specifications_tab != blank %}
+          <div class="accordion-item" onclick="featureTabClicked(this)">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#specification" aria-expanded="false" aria-controls="specification">
+                Specifications
+              </button>
+            </h2>
+            <div id="specification" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample2">
+              <div class="accordion-body">
+                {{ product.metafields.custom.product_specifications_tab }}      
+              </div>
+            </div>
+          </div>
+          {% endif %}  
+          {% if product.metafields.custom.product_what_in_box_tab != blank %}
+          <div class="accordion-item" onclick="featureTabClicked(this)">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#whatBox" aria-expanded="false" aria-controls="whatBox">
+                What&#39;s in the Box?
+              </button>
+            </h2>
+            <div id="whatBox" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample2">
+              <div class="accordion-body">
+               {{ product.metafields.custom.product_what_in_box_tab }}
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          {% if product.metafields.custom.product_support_tab != blank %}
+          <div class="accordion-item" onclick="featureTabClicked(this)">
+            <h2 class="accordion-header" id="headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#support" aria-expanded="false" aria-controls="support">
+                Support
+              </button>
+            </h2>
+            <div id="support" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample2">
+              <div class="accordion-body">
+                {{ product.metafields.custom.product_support_tab }}
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}

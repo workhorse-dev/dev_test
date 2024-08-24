@@ -1,0 +1,128 @@
+<section class="policy-section py-4">
+  <div class="container">
+    <div class="inside-container">
+      <div class="policy-desktop-content">
+        <div class="d-flex justify-content-center align-items-center">
+          {%- for block in section.blocks -%}
+            <div class="d-flex align-items-center terms-container {% unless  forloop.last == true  %}me-4 {% endunless %}">
+              <div class="image-border">
+                <img alt="{{block.settings.heading}}" class="lazy img-fluid" width="66" src="{{block.settings.image | img_url:'66x'}}" loading="lazy">
+              </div>
+              <p class="policy-text">{{block.settings.heading}}</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="policy-mobile-carousel">
+        <div id="policy-slider" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            {%- for block in section.blocks -%}
+              <div class="carousel-item {% if forloop.first == true %}active{% endif %}">
+              <div  class="d-flex align-items-center terms-container justify-content-center">
+                <div class="image-border">
+                  <img alt="{{block.settings.heading}}" class="lazy img-fluid" src="{{block.settings.image | img_url:'66x'}}" loading="lazy">
+                </div>
+                <p class="policy-text">{{block.settings.heading}}</p>
+              </div>
+            </div>
+            {% endfor %} 
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#policy-slider" data-bs-slide="prev">
+            <img src="{{'left-arrow.png' | asset_url }}" alt="left arrow" />
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#policy-slider" data-bs-slide="next">
+            <img src="{{'right-arrow.png' | asset_url }}" alt="right arrow" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .policy-section{
+    background-color: {{section.settings.policy_bg}};
+  }
+  .policy-text{
+    color: {{section.settings.policy_color}};
+    font-size:{{section.settings.policytext_size}}px;
+  }
+  .policy-section .image-border{
+    border: 2px solid {{section.settings.icon_border}};
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "shipping-return",
+    "settings": [
+      {
+        "type": "color",
+        "id": "policy_bg",
+        "default": "#fff",
+        "label": "Policy Background Color"
+      },
+      {
+        "type": "color",
+        "id": "policy_color",
+        "default": "#000",
+        "label": "Offer Bar Font-Link Color"
+      },
+      {
+        "type": "range",
+        "id": "policytext_size",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Offer Text Font Size",
+        "default": 16
+      },
+      {
+        "type": "color",
+        "id": "icon_border",
+        "default": "#000",
+        "label": "Icon Border Color"
+      }
+    ],
+    "blocks": [
+      {
+      "type": "block",
+      "name": "block",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Image slide",
+          "label": "heading",
+		  "info" : "Please include heading here"
+        }        
+      ]
+    }
+    ],
+    "presets": [
+    {
+      "name": "shipping-return",
+      "blocks": [
+        {
+          "type": "block"
+        },
+        {
+          "type": "block"
+        }
+      ]
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

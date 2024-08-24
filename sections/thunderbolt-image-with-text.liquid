@@ -1,0 +1,281 @@
+<style>
+  .product_bg{
+    background-color: {{section.settings.product_bg}};
+  }
+  .page_work_bg{
+    background-color: {{section.settings.page_work_bg}};
+  }
+</style>
+{% for block in section.blocks %}
+  {% case block.type %}
+    {% when 'split-img-left' %}
+      <section class="landing-product-information-section back-section container my-4">
+        <div class="inside-container feature-tab-container">
+          <div class="row align-items-center">
+            <div class="col-12 col-sm-12 col-md-7">
+         <div class="product-imgs">
+            <a class="image_link" href="{{block.settings.link}}">
+              <img alt="{{block.settings.heading}}" class="lazy img-fluid" src="{{block.settings.image | img_url:'original'}}">
+            </a>   
+         </div>
+      </div>
+             <div class="col-12 col-sm-12 col-md-5 sm-text-center">
+              <h3 class="heading-type2">{{block.settings.heading}}</h3>
+              {% unless block.settings.description == blank %}<div class="title-color mb-4">{{block.settings.description}}</div>{% endunless%}
+              {% unless block.settings.link == blank %}<p><a class="primary-btn common-btn Button-style" href="{{block.settings.link}}">{{block.settings.button_label}}</a></p>{% endunless%} 
+            </div>
+          </div>
+        </div>
+      </section>
+    {% when 'split-img-right' %}
+      <section class="landing-product-information-section back-section container my-4">
+        <div class="inside-container feature-tab-container">
+          <div class="row align-items-center">
+            <div class="col-12 col-sm-12 col-md-5 sm-text-center sm-order-2">
+              <h3 class="heading-type2">{{block.settings.heading}}</h3>
+              {% unless block.settings.description == blank %}<div class="title-color mb-4">{{block.settings.description}}</div>{% endunless%}
+              {% unless block.settings.link == blank %}<p><a class="primary-btn common-btn Button-style" href="{{block.settings.link}}">{{block.settings.button_label}}</a></p>{% endunless%} 
+            </div>
+            <div class="col-12 col-sm-12 col-md-7">
+               <div class="product-imgs">
+                  <a class="image_link" href="{{block.settings.link}}">
+                    <img alt="{{block.settings.heading}}" class="lazy img-fluid" src="{{block.settings.image | img_url:'original'}}">
+                  </a>
+               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+     {% when 'product-wrap' %}
+      <section class="product-section product_bg">
+        <div class="container">
+          <div class="inside-container">
+            <div class="row">
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 {% if forloop.last == true %}mt-5 mt-md-4 {% else %} mt-4{% endif %}">
+                <div class="product-image-box">
+                  <img alt="{{ block.settings.pro_heading}}" src="{{block.settings.pro_image | img_url:'800x'}}" loading="lazy">
+                  <div class="text-center text-white">
+                    {% unless block.settings.pro_heading == blank %}<h2 class="heading-type2 mb-2">{{block.settings.pro_heading}}</h2>{% endunless%}
+                    {% unless block.settings.prosubheading == blank %}<p class="subheading-type2">{{block.settings.prosubheading}}</p>{% endunless%}
+                  </div>
+                </div>
+              </div>
+               <div class="col-12 col-sm-12 col-md-6 col-lg-6 {% if forloop.last == true %}mt-5 mt-md-4 {% else %} mt-4{% endif %}">
+                <div class="product-image-box">
+                  <img alt="{{ block.settings.proheading2}}" src="{{block.settings.proimage2 | img_url:'800x'}}" loading="lazy">
+                  <div class="text-center text-white">
+                    {% unless block.settings.proheading2 == blank %}<h2 class="heading-type2 mb-2">{{block.settings.proheading2}}</h2>{% endunless%}
+                    {% unless block.settings.prosubheading2 == blank %}<p class="subheading-type2">{{block.settings.prosubheading2}}</p>{% endunless%}
+                  </div>
+                </div>
+              </div>  
+            
+            </div>
+          </div>
+        </div>
+      </section>
+      {% when 'text-image-center' %}
+      <section class="workflow-section page_work_bg">
+        <div class="container">
+        <div class="workflow-top-content text-center">
+          {% if block.settings.image_heading != blank %}
+            <h2 class="main-heading">{{ block.settings.image_heading }}</h2>
+          {% endif %}
+          {% if block.settings.Imgsub_heading != blank %}
+            <p class="mb-3">{{ block.settings.Imgsub_heading }}</p>
+         {% endif %} 
+         {% unless block.settings.img_link == blank %}<p><a class="primary-btn common-btn Button-style" href="{{block.settings.img_link}}">{{block.settings.imgbutton_label}}</a></p>{% endunless%} 
+         </div>
+         <div class="d-flex justify-content-center">
+            <img src="{{ block.settings.img_center | img_url:'original' }}" alt="workflow image" class="img-fluid" />
+          </div>
+        </div>
+      </section>
+  {% endcase %}  
+{% endfor %}
+
+{% schema %}
+  {
+    "name": "EBS Layout",
+    "settings": [
+      {
+       "type":"header",
+        "content":"Section Product Wrap Background"
+      },
+      {
+        "type": "color",
+        "id": "product_bg",
+        "default": "#585858",
+        "label": "Product Wrap Background Color"
+      },
+      {
+        "type": "color",
+        "id": "page_work_bg",
+        "default": "#ebebeb",
+        "label": "Image Background Color"
+      }
+    ],
+    "blocks": [
+      {
+        "name":"50/50 - Image Left",
+        "type":"split-img-left",
+        "settings":[
+          {
+            "type": "text",
+            "id": "heading",
+            "default": "Image banner",
+            "label": "Heading",
+    		"info" : "Please include heading here"
+          }, 
+          {
+            "type": "richtext",
+            "id": "description",          
+            "label": "Description",
+            "info" : "Please include description here"
+          }, 
+          {
+            "type": "image_picker",
+            "id": "image",          
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "default": "Button label",
+            "label": "t:sections.slideshow.blocks.slide.settings.button_label.label",
+            "info": "t:sections.slideshow.blocks.slide.settings.button_label.info"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "t:sections.slideshow.blocks.slide.settings.link.label",
+            "info" : "Please include Button link here"
+          }
+        ]
+      },
+      {
+        "name":"50/50 - Image Right",
+        "type":"split-img-right",
+        "settings":[
+          {
+            "type": "text",
+            "id": "heading",
+            "default": "Image banner",
+            "label": "Heading",
+    		"info" : "Please include heading here"
+          }, 
+          {
+            "type": "richtext",
+            "id": "description",          
+            "label": "Description",
+            "info" : "Please include description here"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",          
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "default": "Button label",
+            "label": "t:sections.slideshow.blocks.slide.settings.button_label.label",
+            "info": "t:sections.slideshow.blocks.slide.settings.button_label.info"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "t:sections.slideshow.blocks.slide.settings.link.label",
+            "info" : "Please include Button link here"
+          }
+        ]
+      },
+      {
+        "name":"product-wrap",
+        "type":"product-wrap",
+        "settings":[
+           {
+            "type": "image_picker",
+            "id": "pro_image",
+            "label": "t:sections.slideshow.blocks.slide.settings.image.label"
+           },
+          {
+            "type": "text",
+            "id": "pro_heading",
+            "default": "Turn Your iPad Into a Desktop",
+            "label": "t:sections.slideshow.blocks.slide.settings.heading.label",
+  		    "info" : "Please include heading here"
+          },        
+          {
+            "type": "textarea",
+            "id": "prosubheading",
+            "default": "Vivamus vel orci sem. Fusce molestie accumsan condimentum.",
+            "label": "t:sections.slideshow.blocks.slide.settings.subheading.label",
+  		    "info" : "Please include subheading here"
+          },
+          {
+            "type": "image_picker",
+            "id": "proimage2",
+            "label": "t:sections.slideshow.blocks.slide.settings.image.label"
+          },
+          {
+            "type": "text",
+            "id": "proheading2",
+            "default": "Turn Your iPad Into a Desktop",
+            "label": "t:sections.slideshow.blocks.slide.settings.heading.label",
+    		"info" : "Please include heading here"
+          },        
+          {
+            "type": "textarea",
+            "id": "prosubheading2",
+            "default": "Vivamus vel orci sem. Fusce molestie accumsan condimentum.",
+            "label": "t:sections.slideshow.blocks.slide.settings.subheading.label",
+    		"info" : "Please include subheading here"
+          }
+        ]
+      },
+      {
+        "name":"image-center",
+        "type":"text-image-center",
+        "settings":[
+          {
+            "type": "image_picker",
+            "id": "img_center",
+            "label": "t:sections.slideshow.blocks.slide.settings.image.label"
+          },
+          {
+            "type": "text",
+            "id": "image_heading",
+            "default": "Optimize Your Workflow. Minimize Your Footprint.",
+            "label": "Heading",
+            "info" : "Please include heading here"
+          },
+          {
+            "type": "text",
+            "id": "Imgsub_heading",          
+            "label": "Sub Heading",
+            "default":"Meet the world's first Thunderbolt 4 Hub with an integrated GaN power source that eliminates power bricks for better workflows and a cleaner setup.",
+            "info" : "Please include Sub Heading here"
+          },
+          {
+            "type": "text",
+            "id": "imgbutton_label",
+            "default": "Button label",
+            "label": "Button label"
+          },
+          {
+            "type": "url",
+            "id": "img_link",
+            "label": "Button URL"
+  		  }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

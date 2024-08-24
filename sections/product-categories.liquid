@@ -1,0 +1,180 @@
+<section class="product-categories-section">
+  <div class="container">
+    <div class="inside-container">
+      <h2 class="heading-type2 text-center categories-heading">{{ section.settings.title }}</h2>
+      <div class="product-categories-desktop">
+        <div class="d-flex justify-content-center">
+          {% for block in section.blocks limit: section.blocks.size %}
+          {%- assign collection = collections[block.settings.collection] -%}
+            {% if collection.image %}
+              {%- assign collection_image = collection.image -%}
+            {% elsif collection.products.first and collection.products.first.images != empty %}
+              {%- assign collection_image = collection.products.first.featured_image -%}
+            {% else %}
+              {% assign collection_image = blank %}
+            {% endif %}
+            <div class="product-img-box">
+              <a class="list-item" href="{{ shop.secure_url }}{% if block.settings.collection_link != blank %}{{ block.settings.collection_link }}{% else %}{{ collection.url }}{% endif %}">
+                {% unless collection_image == blank %}
+                  <div class="img-container">
+                  {% if block.settings.coll_img != blank %}
+                    <img src="{{ block.settings.coll_img | img_url: '300x300' }}" alt="{{collection.title}}" loading="lazy"/>
+                    {% else %}
+                    <img src="{{ collection_image | img_url: '300x300' }}" alt="{{ collection.title  }}" loading="lazy"/>
+                  {% endif %}
+                  </div>
+                {% endunless %}
+                <p class="text-center collection_title">{{ collection.title }}</p>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="product-categories-mobile">
+        <div class="owl-carousel product-categories-carousel">
+          {% for block in section.blocks limit: section.blocks.size %}
+          {%- assign collection = collections[block.settings.collection] -%}
+            {% if collection.image %}
+              {%- assign collection_image = collection.image -%}
+            {% elsif collection.products.first and collection.products.first.images != empty %}
+              {%- assign collection_image = collection.products.first.featured_image -%}
+            {% else %}
+              {% assign collection_image = blank %}
+            {% endif %}
+            <div class="item">
+                <div class="product-img-box">
+                  <a class="list-item" href="{{ shop.secure_url }}{% if block.settings.collection_link != blank %}{{ block.settings.collection_link }}{% else %}{{ collection.url }}{% endif %}">
+                    {% unless collection_image == blank %}
+                      <div class="img-container">
+                        {% if block.settings.coll_img != blank %}
+                          <img src="{{ block.settings.coll_img | img_url: '300x300' }}" alt="{{collection.title}}"/>
+                          {% else %}
+                          <img src="{{ collection_image | img_url: '300x300' }}" alt="{{ collection.title  }}"/>
+                        {% endif %}
+                      </div>
+                    {% endunless %}
+                    <p class="text-center collection_title">{{ collection.title }}</p>
+                  </a>
+                </div>
+              </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .product-categories-section{
+    background-color: {{section.settings.categories_bg}};
+  }
+  .categories-heading{
+    color: {{section.settings.categories_heading}};
+    font-size: {{section.settings.categories_size}}px;
+  }
+  .collection_title{
+    color: {{section.settings.col_titlecolor}};
+    font-size: {{section.settings.col_titlesize}}px;
+  }
+</style>
+{% schema %}
+  {
+    "name": "Product Categories",
+    "max_blocks": 8,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Product Categories"
+      },
+      {
+        "type": "header",
+        "content": "Section Background Style"
+      },
+      {
+        "type": "color",
+        "id": "categories_bg",
+        "default": "#fff",
+        "label": "Categories Background Color"
+      },
+      {
+        "type": "color",
+        "id": "categories_heading",
+        "default": "#000",
+        "label": "Heading Color"
+      },
+      {
+        "type": "range",
+        "id": "categories_size",
+        "min": 25,
+        "max": 36,
+        "step": 1,
+        "unit": "px",
+        "label": "Heading Font Size",
+        "default": 32
+      },
+      {
+        "type": "color",
+        "id": "col_titlecolor",
+        "default": "#000",
+        "label": "Collection Title Color"
+      },
+      {
+        "type": "range",
+        "id": "col_titlesize",
+        "min": 12,
+        "max": 24,
+        "step": 1,
+        "unit": "px",
+        "label": "Collection Title Font Size",
+        "default": 16
+      }
+    ],
+    "blocks": [
+      {
+        "type": "featured_collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "label": "Collection",
+            "id": "collection",
+            "type": "collection"
+          },
+          {
+            "type": "image_picker",
+            "id": "coll_img",
+            "label": "Collection Image"
+          },
+          {
+            "type":"url",
+            "label":"Collection Custom URL",
+            "id":"collection_link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Product Categories",
+        "category": "Collection",
+        "blocks": [
+          {
+            "type": "featured_collection"
+          },
+          {
+            "type": "featured_collection"
+          },
+          {
+            "type": "featured_collection"
+          }
+        ]
+      }
+    ]    
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

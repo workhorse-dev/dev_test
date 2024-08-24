@@ -1,0 +1,20 @@
+{% if collection.metafields.custom.collection_additional_title != blank or collection.metafields.custom.collections_additional != blank or collection.metafields.custom.collection_additional_subtitle != blank%} 
+<section class="collections-content my-5" id="additional-content" style="display:none;">
+  <div class="container">
+    <div class="inside-container feature-tab-container">
+      <h2 class="heading-type2- main-heading text-center">{{ collection.metafields.custom.collection_additional_title }}</h2>
+      <div class="Collectionsub">{{ collection.metafields.custom.collection_additional_subtitle }}</div>
+      <div class="my-2 content-bg">
+        {{ collection.metafields.custom.collections_additional }}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Section name",
+    "settings": []
+  }
+{% endschema %}

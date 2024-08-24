@@ -1,0 +1,78 @@
+{% comment %}
+  title: section.settings.title,
+  title_color: section.settings.title_color,
+  blocks: section.blocks
+{% endcomment %}
+
+  {% if title_color != blank %}
+    <style>
+      .section__{{section_id}} h2 {
+        color: {{ title_color }} !important;
+      }
+
+      .is-first .section__{{section_id}} h2 {
+        color: #fff !important;
+        font-family: myFontBold, sans-serif;
+      }
+      .is-first .section__{{section_id}} h3 {
+        color: #fff !important;
+        font-family: myFontBold, sans-serif;
+      }
+/*
+      @media screen and (max-width: 1179px) {
+        .is-first .section__{{section_id}} .image-with-content:nth-of-type(3) h3, .is-first .section__{{section_id}} .image-with-content:nth-of-type(4) h3 {
+          color: #939598 !important;
+        }
+      }
+*/
+      @media screen and (max-width: 1279px) {
+        .is-first .section__{{section_id}} h3 {
+          color: #939598 !important;
+        }
+      }
+      @media screen and (max-width: 1279px) {
+        .is-first .section__{{section_id}} h2 {
+          color: {{ title_color }} !important;
+        }
+      }
+    </style>
+  {% endif %}
+
+<section class="values-proposition landing-section section__{{section_id}}">
+
+  {% if title != blank %}
+    <h2 class="image-block__heading main-heading">{{ title | newline_to_br }}</h2>
+  {% endif %}
+
+  <div class="images-with-content">
+
+    {% for block in blocks %}
+
+      <div class="image-with-content">
+        {% if block.settings.title != blank %}
+          <h3 class="title heading-type2 ">{{ block.settings.title }}</h3>
+        {% endif %}
+
+        {% assign image = block.settings.image %}
+        {% if image %}
+          <style>
+            {% if image %}
+            .block-{{ block.id }} {
+              background-image: url("{{ image | img_url: '700x' }}");
+            }
+            {% endif %}
+          </style>
+          <a href="{{ block.settings.coll_url }}"><div class="image-container mb-3 block-{{ block.id }}"></div></a>
+        {% endif %}
+
+        {% if block.settings.text != blank %}
+          {{ block.settings.text | newline_to_br }}
+        {% endif %}
+
+
+      </div>
+
+    {% endfor %}
+  </div>
+
+</section>

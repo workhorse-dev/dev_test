@@ -1,0 +1,197 @@
+<section class="featured-section">
+  <div class="container">
+    <div class="inside-container">
+      <div class="testimonial-section">
+        <div class="owl-carousel testimonial-carousel">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'testimonial' -%}
+                <div class="item">
+                  <div class="add-quote">
+                    {% unless block.settings.heading == blank %}
+                      <h2 class="main-heading">{{ block.settings.heading }}</h2>{% endunless %}
+                  </div>
+                  <div class="cnet-img">
+                    <img src="{{block.settings.image | img_url:'180x'}}" width="180" loading="lazy" alt="{{ block.settings.heading }}" class="img-fluid"/>
+                  </div>
+                </div>
+            {%- endcase -%}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="regularly-featured">
+        <h2 class="heading-type2 text-center">{{ section.settings.featured_heading }}</h2>
+        <div class="d-flex justify-content-center align-items-center flex-wrap">
+         {%- for block in section.blocks -%}
+           {%- case block.type -%}
+           {%- when 'featured_logo' -%}
+            <div class="brand-imgs">
+              <img src="{{block.settings.image | img_url:'150x'}}" width="150" loading="lazy" alt="logo-{{ forloop.index }}" class="img-fluid" />
+            </div>
+           {%- endcase -%}
+         {% endfor %}        
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .featured-section{
+    background: {{section.settings.features_bg_color}};
+  }
+  .featured-section .regularly-featured .heading-type2{
+    color: {{section.settings.logo_heading}};
+    font-size:  {{section.settings.logo_size}}px;
+  }
+  .featured-section .add-quote .main-heading{
+    color: {{section.settings.testi_heading}};
+    font-size:  {{section.settings.testi_size}}px !important;
+  }
+  .featured-section .testimonial-section .owl-dots .owl-dot.active{
+    border: {{section.settings.dotsborder}}px solid {{section.settings.dotsbg}};
+    background: {{section.settings.doactiveColor}};
+  }
+  .featured-section .testimonial-section .owl-dots .owl-dot{
+    border: {{section.settings.dotsborder}}px solid {{section.settings.doactiveColor}};
+    background: {{section.settings.dotsbg}};
+  }
+</style>
+{% schema %}
+  {
+    "name": "Testimonial & Featured",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section Background Style"
+      },
+      {
+        "type": "color",
+        "id": "features_bg_color",
+        "default": "#f8f8f8",
+        "label": "Section Background Color"
+      },
+      {
+        "type": "header",
+        "content": "Fonts Style"
+      },
+      {
+        "type": "header",
+        "content": "Features Logo Fonts Style"
+      },
+      {
+        "type": "text",
+        "id": "featured_heading",
+        "default": "Regularly Featured In",
+        "label": "Featured Logo Heading",
+        "info" : "Please include heading here"
+      },
+      {
+        "type": "color",
+        "id": "logo_heading",
+        "default": "#898a8d",
+        "label": "Heading Color"
+      },
+      {
+        "type": "range",
+        "id": "logo_size",
+        "min": 25,
+        "max": 36,
+        "step": 1,
+        "unit": "px",
+        "label": "Heading Font Size",
+        "default": 32
+      },
+      {
+        "type": "color",
+        "id": "testi_heading",
+        "default": "#000",
+        "label": "Testimonial Heading Color"
+      },
+      {
+        "type": "range",
+        "id": "testi_size",
+        "min": 35,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Testimonial Heading Font Size",
+        "default": 42
+      },
+      {
+        "type": "header",
+        "content": "Slider Dot Indicator Style"
+      },
+      {
+        "type":"color",
+        "id":"dotsbg",
+        "label":"Dots background color",
+        "default":"#3c3fbc"
+      },
+      {
+        "type":"color",
+        "id":"doactiveColor",
+        "label":"Active Dots color",
+        "default":"#3c3fbc"
+      },
+      {
+        "type": "range",
+        "id": "dotsborder",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "unit": "px",
+        "label": "Dots Border pixel",
+        "default": 3
+      }
+    ],
+    "blocks": [
+      {
+        "type": "testimonial",
+        "name": "Testimonial",
+        "settings": [
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+    		"info" : "Please include Testimonial Title here"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",          
+            "label": "Logo Image"
+          } 
+        ]
+      },
+      {
+        "type":"featured_logo",
+         "name": "Featured In Logo",
+         "settings": [
+           {
+              "type": "image_picker",
+              "id": "image",          
+              "label": "Featured In Logo Image"
+           } 
+         ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Testimonial & Featured",
+         "blocks": [
+           {
+             "type": "testimonial"
+           },
+           {
+             "type":"featured_logo"
+           }
+         ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

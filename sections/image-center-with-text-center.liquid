@@ -1,0 +1,71 @@
+<section class="workflow-section work_bg">
+  <div class="container">
+    <div class="workflow-top-content text-center">
+      <h2 class="main-heading">{{ section.settings.image_heading }}</h2>
+      <p>{{ section.settings.Imgsub_heading }}</p>
+    </div>
+    <div class="d-flex justify-content-center">
+      <img src="{{ section.settings.center_img | img_url:'original' }}" alt="workflow image" class="img-fluid" />
+    </div>
+    <span>{{ section.settings.center_description }}</span>
+  </div>
+</section>
+<style>
+  .work_bg{
+    background-color:{{section.settings.work_bg}};
+  }
+</style>
+{% schema %}
+  {
+    "name": "Image & Text Center",
+    "settings": [
+      {
+      "type": "header",
+      "content": "Section Style"
+      },
+      {
+        "type":"color",
+        "id":"work_bg",
+        "label":"Section Background Color",
+        "default":"#fff"
+      },
+      {
+        "type": "text",
+        "id": "image_heading",
+        "default": "Optimize Your Workflow. Minimize Your Footprint.",
+        "label": "Heading",
+        "info" : "Please include heading here"
+      },
+      {
+        "type": "text",
+        "id": "Imgsub_heading",          
+        "label": "Sub Heading",
+        "default":"Meet the world's first Thunderbolt 4 Hub with an integrated GaN power source that eliminates power bricks for better workflows and a cleaner setup.",
+        "info" : "Please include Sub Heading here"
+      }, 
+      {
+        "type": "image_picker",
+        "id": "center_img",          
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "center_description",          
+        "label": "Description",
+        "default":"*Downstream data and display data will be shared between downstream ports when multiple ports are being used simultaneously.",
+        "info" : "Please include description here"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image & Text Center"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
